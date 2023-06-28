@@ -1,7 +1,17 @@
+using ECommerceApp.Core.Domain.Interfaces;
+using ECommerceApp.Core.Domain.Interfaces.Repository;
+using ECommerceApp.Infrastructure.Context;
+using ECommerceApp.Infrastructure.Persistence;
+using ECommerceApp.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddScoped<IMongoContext, MongoContext>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 

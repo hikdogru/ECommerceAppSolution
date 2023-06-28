@@ -17,14 +17,13 @@
     @RenderSection("TopLevelCss", false)
     <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
     <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/css/custom.css" rel="stylesheet" type="text/css" />
-    @RenderSection("PageLevelCss", false)   
+    @RenderSection("PageLevelCss", false)
 </head>
 <body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true"
-    data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
-    data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
-    data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
-     <script>
+      data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
+      data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
+      data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+    <script>
         var defaultThemeMode = "light";
         var themeMode;
 
@@ -44,11 +43,10 @@
             }
 
             document.documentElement.setAttribute("data-bs-theme", themeMode);
-        }            
+        }
     </script>
     <!--end::Theme mode setup on page load-->
     @RenderBody()
-
     <script>var hostUrl = "/assets/";</script>
     <script src="/assets/plugins/global/plugins.bundle.js"></script>
     <script src="/assets/js/scripts.bundle.js"></script>
@@ -59,7 +57,7 @@
     <script src="/assets/js/custom/utilities/modals/create-app.js"></script>
     <script src="/assets/js/custom/utilities/modals/create-campaign.js"></script>
     <script src="/assets/js/custom/utilities/modals/users-search.js"></script>
-    <script src="/assets/js/common.js"></script>
+    <script src="~/js/site.js"></script>
 
     @RenderSection("Scripts", false)
 </body>
