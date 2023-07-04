@@ -1,4 +1,5 @@
-﻿using ECommerceApp.WebUI.Models;
+﻿using ECommerceApp.Core.Helpers;
+using ECommerceApp.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.WebUI.Controllers
@@ -45,10 +46,15 @@ namespace ECommerceApp.WebUI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(CategoryModel model)
+        public async Task<IActionResult> Create(CategoryModel model)
         {
             if (ModelState.IsValid)
             {
+                foreach (var categoryLanguage in model.CategoryLanguages)
+                {
+
+                }
+                await FileHelper.SaveFile(model.CategoryMedias[0].File);
 
             }
             return View(model);

@@ -33,6 +33,9 @@ public class CategoryMediaModel
     /// </summary>
     public string Title { get; set; }
 
+
+    public IFormFile File { get; set; }
+
     /// <summary>
     /// Media path
     /// </summary>

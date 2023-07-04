@@ -62,8 +62,8 @@
 
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container  container-xxl " data-select2-id="select2-data-kt_app_content_container">
-            <form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post">
-                <!--begin::Aside column-->
+            <form class="form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework" method="post" enctype="multipart/form-data">
+            <!--begin::Aside column-->
                 <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
                     <!--begin::Thumbnail settings-->
                     <div class="card card-flush p-4">
@@ -77,7 +77,7 @@
                             {
 
                                 <li class="nav-item">
-                                    <a class="nav-link @(i == 1 ? "active" : "" )" data-bs-toggle="tab" href="#mediaTabPanel@(categoryMedia.LanguageCode)">@categoryMedia.LanguageCode</a>
+                                    <a class="nav-link @(i == 1 ? "active" : "")" data-bs-toggle="tab" href="#mediaTabPanel@(categoryMedia.LanguageCode)">@categoryMedia.LanguageCode</a>
                                 </li>
 
                                 i++;
@@ -90,8 +90,10 @@
                         }
                         @foreach (var categoryMedia in Model.CategoryMedias)
                         {
+                            <input type="hidden" asp-for="CategoryMedias[i-1].LanguageId" />
+                            <input type="hidden" asp-for="CategoryMedias[i-1].LanguageCode" />
                             <div class="tab-content" id="myTabContent@(i)">
-                                <div class="tab-pane fade @(i == 1 ? "show active" : "" )" id="mediaTabPanel@(categoryMedia.LanguageCode)" role="tabpanel">
+                                <div class="tab-pane fade @(i == 1 ? "show active" : "")" id="mediaTabPanel@(categoryMedia.LanguageCode)" role="tabpanel">
 
                                     <!--begin::Card header-->
                                     <div class="card-header">
@@ -104,17 +106,19 @@
                                     <!--end::Card header-->
                                     <!--begin::Card body-->
                                     <div class="card-body text-center pt-1">
-
                                         <div class="form-group mb-3">
                                             <select asp-for="CategoryMedias[i - 1].MediaType" asp-items="Html.GetEnumSelectList<MediaTypes>()" class="form-select">
                                                 <option>Choose media type</option>
                                             </select>
+                                            <span asp-validation-for="CategoryMedias[i-1].MediaType" class="text-danger"></span>
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <select asp-for="CategoryMedias[i - 1].SizeType" asp-items="Html.GetEnumSelectList<MediaSizeTypes>()" class="form-select">
                                                 <option>Choose media type size</option>
                                             </select>
+                                            <span asp-validation-for="CategoryMedias[i - 1].SizeType" class="text-danger"></span>
+
                                         </div>
 
                                         <!--begin::Image input-->
@@ -140,8 +144,7 @@
                                                 <i class="ki-duotone ki-pencil fs-7"><span class="path1"></span><span class="path2"></span></i>
                                                 <!--end::Icon-->
                                                 <!--begin::Inputs-->
-                                                <input type="file" name="avatar" accept=".png, .jpg, .jpeg">
-                                                <input type="hidden" name="avatar_remove">
+                                                <input asp-for="CategoryMedias[i-1].File" accept=".png, .jpg, .jpeg">
                                                 <!--end::Inputs-->
                                             </label>
                                             <!--end::Label-->
@@ -164,7 +167,7 @@
                                         </div>
                                         <!--end::Description-->
 
-
+                                        <span asp-validation-for="CategoryMedias[i-1].File" class="text-danger"></span>
 
 
 
@@ -219,7 +222,7 @@
 
                     <div class="card p-4">
                         <label class="form-label">Parent Category</label>
-                        <select asp-for="ParentId" class="form-select mb-3" name="parent_id">
+                        <select asp-for="ParentId" class="form-select mb-3">
                             <option value="">No Parent</option>
                             <option value="1">Parent 1</option>
                             <option value="2">Parent 2</option>
@@ -228,6 +231,9 @@
                             <option value="5">Parent 5</option>
 
                         </select>
+
+                        <span asp-validation-for="ParentId" class="text-danger"></span>
+
                         <ul class="nav nav-tabs nav-line-tabs mb-1 fs-4">
                             @{
                                 i = 1;
@@ -236,7 +242,7 @@
                             @foreach (var categoryLanguage in Model.CategoryLanguages)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link @(i == 1 ? "active" : "" )" data-bs-toggle="tab" href="#categoryTabPanel@(categoryLanguage.LanguageCode)">@categoryLanguage.LanguageCode</a>
+                                    <a class="nav-link @(i == 1 ? "active" : "")" data-bs-toggle="tab" href="#categoryTabPanel@(categoryLanguage.LanguageCode)">@categoryLanguage.LanguageCode</a>
                                 </li>
 
                                 i++;
@@ -249,8 +255,11 @@
                         }
                         @foreach (var categoryLanguage in Model.CategoryLanguages)
                         {
+                            <input type="hidden" asp-for="CategoryLanguages[i-1].LanguageId" />
+                            <input type="hidden" asp-for="CategoryLanguages[i-1].LanguageCode" />
+
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade @(i == 1 ? "show active" : "" )" id="categoryTabPanel@(categoryLanguage.LanguageCode)" role="tabpanel">
+                                <div class="tab-pane fade @(i == 1 ? "show active" : "")" id="categoryTabPanel@(categoryLanguage.LanguageCode)" role="tabpanel">
                                     <!--begin::General options-->
                                     <div class="card card-flush py-4">
                                         <!--begin::Card body-->
@@ -261,27 +270,27 @@
                                                 <label class="required form-label">Category Name</label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input asp-for="CategoryLanguages[i - 1].Name" class="form-control mb-2" placeholder="Category name">
+                                                <input asp-for="CategoryLanguages[i - 1].Name" class="form-control mb-2" placeholder="Category name" autocomplete="off">
+                                                <span asp-validation-for="CategoryLanguages[i - 1].Name" class="text-danger"></span>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                             <!--begin::Input group-->
-                                            <div>
+                                            <div class="mb-5 fv-row fv-plugins-icon-container">
                                                 <!--begin::Label-->
                                                 <label class="form-label">Description</label>
                                                 <!--end::Label-->
                                                 <!--begin::Editor-->
-                                                <div class="ql-toolbar ql-snow">
-                                                    <textarea asp-for="CategoryLanguages[i-1].Description" class="content-editor"></textarea>
-                                                </div>
+                                                <input asp-for="CategoryLanguages[i - 1].Description" class="form-control content-editor" />
+                                                <span asp-validation-for="CategoryLanguages[i-1].Description" class="text-danger"></span>
+
                                                 <!--end::Editor-->
                                             </div>
                                             <!--end::Input group-->
 
                                             <div>
                                                 <label class="form-label">Sort Number</label>
-                                                <input asp-for="CategoryLanguages[i-1].SortNr" class="form-control" />
-
+                                                <input asp-for="CategoryLanguages[i - 1].SortNr" class="form-control" />
                                             </div>
 
                                         </div>
@@ -301,7 +310,7 @@
                         </a>
                         <!--end::Button-->
                         <!--begin::Button-->
-                        <button type="submit" id="kt_ecommerce_add_category_submit" class="btn btn-primary">
+                        <button type="submit" id="createCategory" class="btn btn-primary">
                             <span class="indicator-label">
                                 Save Changes
                             </span>
@@ -320,16 +329,18 @@
     <!--end::Content-->
 </div>
 
+
 @section TopLevelJS
     {
     <script type="text/javascript" src="/assets/plugins/custom/tinymce/tinymce.bundle.js"></script>
-    }
+    <partial name="_ValidationScriptsPartial">
+}
 
 @section Scripts
-{
+    {
+
     <script>
         tinymceEditor();
-
 
         const statusSelect = document.getElementById("statusSelect");
         if (statusSelect) {
@@ -338,7 +349,7 @@
                     let value = statusSelect.value;
                     const categoryStatus = document.getElementById("categoryStatus");
                     if (categoryStatus) {
-                        if (value === "true") 
+                        if (value === "true")
                             categoryStatus.classList.replace("bg-danger", "bg-success");
                         else
                             categoryStatus.classList.replace("bg-success", "bg-danger");
@@ -347,4 +358,6 @@
         }
 
     </script>
+    
+    
 }

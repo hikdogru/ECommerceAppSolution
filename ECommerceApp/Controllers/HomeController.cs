@@ -1,23 +1,18 @@
-﻿using System.Diagnostics;
-using ECommerceApp.Core.Domain.Entities;
-using ECommerceApp.Core.Domain.Interfaces.Repository;
-using ECommerceApp.WebUI.Models;
+﻿using ECommerceApp.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
+using System.Diagnostics;
 
 namespace ECommerceApp.WebUI.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICategoryRepository _categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger,
-            ICategoryRepository categoryRepository
+
+        public HomeController(ILogger<HomeController> logger
             )
         {
             _logger = logger;
-            _categoryRepository = categoryRepository;
         }
 
         public async Task<IActionResult> Index()

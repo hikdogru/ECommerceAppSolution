@@ -1,8 +1,11 @@
+using ECommerceApp.Core.Domain.Entities;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
+using ECommerceApp.Core.Services.Abstract;
+using ECommerceApp.Core.Services.Concrete;
 using ECommerceApp.Infrastructure.Context;
-using ECommerceApp.Infrastructure.Persistence;
 using ECommerceApp.Infrastructure.Repositories;
+using MongoDB.Bson;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 
-builder.Services.AddScoped<IMongoContext, MongoContext>();
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddSingleton<IMongoContext, MongoContext>();
+builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Category>>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 
