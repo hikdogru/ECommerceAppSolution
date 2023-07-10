@@ -10,7 +10,7 @@ public class CategoryLanguageModel
     /// </summary>
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     // Language Id
     public string LanguageId { get; set; }
@@ -22,7 +22,7 @@ public class CategoryLanguageModel
     public string Name { get; set; }
 
     // Category Description
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     // Category Sort Number
     public int SortNr { get; set; }

@@ -11,13 +11,13 @@ public class CategoryModel
     /// </summary>
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     /// <summary>
     /// Category ParentId
     /// </summary>
     [BsonRepresentation(BsonType.ObjectId)]
-    public string ParentId { get; set; }
+    public string? ParentId { get; set; }
 
     /// <summary>
     /// Is Category Active
@@ -27,8 +27,8 @@ public class CategoryModel
     /// <summary>
     /// Category Languages
     /// </summary>
-    public List<CategoryLanguageModel> CategoryLanguages { get; set; }
+    public List<CategoryLanguageModel>? CategoryLanguages { get; set; }
 
     // Category Medias
-    public List<CategoryMediaModel> CategoryMedias { get; set; }
+    public List<CategoryMediaModel>? CategoryMedias { get; set; }
 }

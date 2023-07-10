@@ -9,5 +9,6 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
 {
     public CategoryService(IRepository<Category, ObjectId> repository) : base(repository)
     {
+
     }
 }

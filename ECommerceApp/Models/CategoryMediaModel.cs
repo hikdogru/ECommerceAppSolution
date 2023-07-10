@@ -10,7 +10,7 @@ public class CategoryMediaModel
     /// </summary>
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     // Language Id
     public string LanguageId { get; set; }
@@ -29,9 +29,9 @@ public class CategoryMediaModel
     public int SizeType { get; set; }
 
     /// <summary>
-    /// Media Tirle
+    /// Media Title
     /// </summary>
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
 
     public IFormFile File { get; set; }
@@ -39,5 +39,5 @@ public class CategoryMediaModel
     /// <summary>
     /// Media path
     /// </summary>
-    public string Path { get; set; }
+    public string? Path { get; set; }
 }

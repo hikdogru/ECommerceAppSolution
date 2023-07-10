@@ -4,10 +4,10 @@ namespace ECommerceApp.Core.Helpers;
 
 public static class FileHelper
 {
-    public static async Task<string> SaveFile(IFormFile file)
+    public static async Task<string> SaveFile(IFormFile file, string path)
     {
         var uniqueFileName = GenerateUniqueFileName(file.FileName);
-        var filePath = GetFilePath(uniqueFileName);
+        var filePath = GetFilePath(uniqueFileName, path);
         await using var stream = new FileStream(filePath, FileMode.Create);
         await file.CopyToAsync(stream);
         return uniqueFileName;
@@ -20,9 +20,10 @@ public static class FileHelper
         return fileName + fileExtension;
     }
 
-    private static string GetFilePath(string fileName)
+    private static string GetFilePath(string fileName, string path)
     {
-        var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+
+        var imagesFolder = Path.Combine(path, "assets", "images");
         return Path.Combine(imagesFolder, fileName);
     }
 }

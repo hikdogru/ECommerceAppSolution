@@ -5,6 +5,7 @@ using ECommerceApp.Core.Services.Abstract;
 using ECommerceApp.Core.Services.Concrete;
 using ECommerceApp.Infrastructure.Context;
 using ECommerceApp.Infrastructure.Repositories;
+using ECommerceApp.WebUI.Mappings.Product;
 using MongoDB.Bson;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IMongoContext, MongoContext>();
 builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Category>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddAutoMapper(typeof(CategoryMapping));
 
 var app = builder.Build();
 

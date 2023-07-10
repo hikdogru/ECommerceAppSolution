@@ -26,7 +26,7 @@ public class CategoryMedia
     public int SizeType { get; set; }
 
     /// <summary>
-    /// Media Tirle
+    /// Media Title
     /// </summary>
     public string Title { get; set; }
 

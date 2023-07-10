@@ -6,5 +6,4 @@ namespace ECommerceApp.Core.Services.Abstract;
 
 public interface ICategoryService : ICRUDService<Category, ObjectId>
 {
-
 }
