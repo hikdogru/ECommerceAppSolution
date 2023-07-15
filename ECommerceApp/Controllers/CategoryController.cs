@@ -6,6 +6,7 @@ using ECommerceApp.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using NToastNotify;
 
 namespace ECommerceApp.WebUI.Controllers
 {
@@ -14,14 +15,17 @@ namespace ECommerceApp.WebUI.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
+        private readonly IToastNotification _toastNotification;
 
         public CategoryController(ICategoryService categoryService,
             IWebHostEnvironment env,
-            IMapper mapper)
+            IMapper mapper,
+            IToastNotification toastNotification)
         {
             _categoryService = categoryService;
             _env = env;
             _mapper = mapper;
+            _toastNotification = toastNotification;
         }
 
         public IActionResult Index()
@@ -69,9 +73,10 @@ namespace ECommerceApp.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 string wwwrootPath = _env.WebRootPath;
-                if (model.CategoryMedias != null)
+                var categoryMedias = model.CategoryMedias.Where(m => m.File != null).ToList();
+                if (categoryMedias.Any())
                 {
-                    foreach (var categoryMedia in model.CategoryMedias)
+                    foreach (var categoryMedia in categoryMedias)
                     {
                         categoryMedia.Path = await FileHelper.SaveFile(categoryMedia.File, wwwrootPath);
                     }
@@ -79,6 +84,8 @@ namespace ECommerceApp.WebUI.Controllers
 
                 var category = _mapper.Map<Category>(model);
                 await _categoryService.Insert(category);
+                _toastNotification.AddSuccessToastMessage("Category created successfully!");
+                return RedirectToAction("Index");
             }
             return View(model);
         }

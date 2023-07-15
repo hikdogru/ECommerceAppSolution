@@ -27,8 +27,8 @@ public class CategoryModel
     /// <summary>
     /// Category Languages
     /// </summary>
-    public List<CategoryLanguageModel>? CategoryLanguages { get; set; }
+    public List<CategoryLanguageModel?> CategoryLanguages { get; set; } = new();
 
     // Category Medias
-    public List<CategoryMediaModel>? CategoryMedias { get; set; }
+    public List<CategoryMediaModel?> CategoryMedias { get; set; } = new();
 }

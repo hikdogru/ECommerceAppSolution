@@ -108,14 +108,14 @@
                                     <div class="card-body text-center pt-1">
                                         <div class="form-group mb-3">
                                             <select asp-for="CategoryMedias[i - 1].MediaType" asp-items="Html.GetEnumSelectList<MediaTypes>()" class="form-select">
-                                                <option>Choose media type</option>
+                                                <option value="">Choose media type</option>
                                             </select>
                                             <span asp-validation-for="CategoryMedias[i-1].MediaType" class="text-danger"></span>
                                         </div>
 
                                         <div class="form-group mb-3">
                                             <select asp-for="CategoryMedias[i - 1].SizeType" asp-items="Html.GetEnumSelectList<MediaSizeTypes>()" class="form-select">
-                                                <option>Choose media type size</option>
+                                                <option value="">Choose media type size</option>
                                             </select>
                                             <span asp-validation-for="CategoryMedias[i - 1].SizeType" class="text-danger"></span>
 

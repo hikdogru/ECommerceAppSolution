@@ -21,12 +21,12 @@ public class CategoryMediaModel
     /// <summary>
     /// Media Type (Video, image etc MediaTypes enum)
     /// </summary>
-    public int MediaType { get; set; }
+    public int? MediaType { get; set; }
 
     /// <summary>
     /// Size Type (Thumbnail, desktop, mobile etc SizeTypes enum)
     /// </summary>
-    public int SizeType { get; set; }
+    public int? SizeType { get; set; }
 
     /// <summary>
     /// Media Title
