@@ -1,12 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using ECommerceApp.Core.Domain.Entities;
 using ECommerceApp.Core.Helpers;
 using ECommerceApp.Core.Services.Abstract;
 using ECommerceApp.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using NToastNotify;
+
 
 namespace ECommerceApp.WebUI.Controllers
 {
@@ -28,10 +31,26 @@ namespace ECommerceApp.WebUI.Controllers
             _toastNotification = toastNotification;
         }
 
+
+
         public IActionResult Index()
         {
             return View();
         }
+
+
+        public IActionResult GetAll(int page, int pageSize, string filter)
+        {
+            var data = _categoryService.GetAll().Select(x => new
+            {
+                Id = x.Id,
+                IsActive = x.IsActive
+            }).ToList();//_context.MyData.Where(d => d.SomeProperty.Contains(filter)).Skip((page - 1) * pageSize).Take(pageSize);
+            return Json(new { data, data.Count });
+        }
+
+
+
 
 
         public IActionResult Create()
@@ -90,4 +109,6 @@ namespace ECommerceApp.WebUI.Controllers
             return View(model);
         }
     }
+
+
 }

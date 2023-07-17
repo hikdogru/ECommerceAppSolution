@@ -1,14 +1,116 @@
-﻿<textarea class="content-editor" id="tinymce1"></textarea>
+﻿@section TopLevelCss
+    {
 
 
-@section TopLevelJS
-{
-    <script type="text/javascript" src="/assets/plugins/custom/tinymce/tinymce.bundle.js"></script>
+
+    <link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet" type="text/css">
+
+
 }
 
+
+
+<div id="grid"></div>
+
+@section TopLevelJS
+    {
+    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/messages/kendo.messages.tr-TR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
+}
+
+
 @section Scripts
-{
+    {
     <script>
-        tinymceEditor();
+        // kendo grid
+        $(document).ready(function () {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "@Url.Action("GetAll", "Category")",
+                        dataType: "json",
+                        type: "GET"
+                    },
+                    update: {
+                        url: "/Employee/UpdatePost",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        type: "post"
+                    },
+                    parameterMap: function (options, operation) {
+                        if (operation === "read") {
+                            options.filter = options.filter || [];
+                            return {
+                                page: options.page,
+                                pageSize: options.pageSize,
+                                filter: options.filter
+                            };
+                        }
+                    }
+                },
+
+                pageSize: 10,
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                width: "100%",
+                scrollable: true,
+                schema: {
+                    // Bu satırın eklenmesi gerekiyor. Eklenmediği hâlde tüm satırları seçmiyor.
+                    model: { id: "Id" },
+                    data: "data",
+                    total: "total"
+                }
+            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                navigatable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                filterable: {
+                    operators: {
+                        string: {
+                            eq: "Eşit",
+                            neq: "Eşit Değil",
+                            startswith: "Başlayan",
+                            contains: "İçeren",
+                            doesnotcontain: "İçermeyen",
+                            endswith: "Biten"
+                        }
+                    }
+                },
+                excel: {
+                    fileName: "products.xlsx",
+                    allPages: true,
+                    columns: [
+                        { field: "name", width: 75 }
+                    ]
+                },
+                toolbar:
+                    [
+                        { name: "create", text: "Add new item", template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>', width: 10 },
+                        { name: "excel" }
+                    ],
+                columns:
+                    [
+                        { field: "id", title: "Id", width: 20, editable: false, },
+                        { field: "isActive", title: "Is Active", width: 20 }
+
+                    ]
+
+
+            });
+
+
+            $("#grid th").css("text-align", "center");
+
+
+        });
+
     </script>
 }
