@@ -1,16 +1,77 @@
 ﻿@section TopLevelCss
     {
-
-
-
+    <style>
+        .k-grid-toolbar {
+            display: flex !important;
+            justify-content: flex-end !important;
+        }
+    </style>
     <link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet" type="text/css">
-
-
 }
 
 
 
-<div id="grid"></div>
+<div id="kt_app_toolbar" class="app-toolbar  py-1 py-lg-6 ">
+
+    <!--begin::Toolbar container-->
+    <div id="kt_app_toolbar_container" class="app-container  container-xxl d-flex flex-stack ">
+
+
+
+        <!--begin::Page title-->
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-1 ">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                Categories
+            </h1>
+            <!--end::Title-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="/" class="text-muted text-hover-primary">
+                        Home
+                    </a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Product
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Category
+                </li>
+                <!--end::Item-->
+
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+
+    </div>
+    <!--end::Toolbar container-->
+</div>
+
+<div id="kt_app_content" class="app-content  flex-column-fluid " data-select2-id="select2-data-kt_app_content">
+
+
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container  container-xxl " data-select2-id="select2-data-kt_app_content_container">
+        <div id="grid"></div>
+    </div>
+</div>
 
 @section TopLevelJS
     {
@@ -98,9 +159,42 @@
                     ],
                 columns:
                     [
-                        { field: "id", title: "Id", width: 20, editable: false, },
-                        { field: "isActive", title: "Is Active", width: 20 }
+                        { field: "id", title: "Id", width: 20, editable: false, hidden: true },
+                        {
+                            field: "name",
+                            title: "Name",
+                            width: 20,
+                            template: function (dataItem) {
 
+                                return `
+                                        <div class="d-flex">
+                                            <!--begin::Thumbnail-->
+                                            <a href="edit-category.html" class="symbol symbol-40px">
+                                                <span class="symbol-label" style="background-image:url(../../../assets/media/stock/ecommerce/68.gif);"></span>
+                                            </a>
+                                            <!--end::Thumbnail-->
+
+                                            <div class="ms-5">
+                                                <!--begin::Description-->
+                                                <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                <!--end::Description-->
+                                            </div>
+                                        </div>
+                                        `;
+                            }
+                        },
+                        {
+                            field: "isActive",
+                            title: "Is Active",
+                            width: 20,
+                            template: function (dataItem) {
+                                if (dataItem.isActive == true) {
+                                    return '<span class="k-icon k-i-check text-success"></span>';
+                                } else {
+                                    return '<span class="k-icon k-i-close text-danger"></span>';
+                                }
+                            }
+                        }
                     ]
 
 
@@ -108,7 +202,7 @@
 
 
             $("#grid th").css("text-align", "center");
-
+            $("#grid tbody").css("text-align", "center");
 
         });
 

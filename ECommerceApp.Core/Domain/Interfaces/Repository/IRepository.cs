@@ -1,9 +1,11 @@
-﻿namespace ECommerceApp.Core.Domain.Interfaces.Repository;
+﻿using MongoDB.Bson;
+
+namespace ECommerceApp.Core.Domain.Interfaces.Repository;
 
 public interface IRepository<TEntity, TKey> : IDisposable where TEntity : IEntity<TKey>
 {
     Task Add(TEntity obj);
-    Task<TEntity> GetById(Guid id);
+    Task<TEntity> GetById(ObjectId id);
     IQueryable<TEntity> GetAll();
     Task Update(TEntity obj);
     Task Remove(TKey id);

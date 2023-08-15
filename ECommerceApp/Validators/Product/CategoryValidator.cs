@@ -1,4 +1,4 @@
-﻿using ECommerceApp.WebUI.Models;
+﻿using ECommerceApp.WebUI.Models.Category;
 using FluentValidation;
 
 namespace ECommerceApp.WebUI.Validators.Product;

@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerceApp.WebUI.Models;
+namespace ECommerceApp.WebUI.Models.Category;
 
 public class CategoryLanguageModel
 {

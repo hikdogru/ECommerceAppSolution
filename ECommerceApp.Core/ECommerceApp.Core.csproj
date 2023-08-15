@@ -10,7 +10,6 @@
 		<Folder Include="Domain\Interfaces\Repository\" />
 		<Folder Include="DTOs\" />
 		<Folder Include="Exceptions\" />
-		<Folder Include="Helpers\" />
 		<Folder Include="Enums\" />
 		<Folder Include="Events\" />
 		<Folder Include="Services\Concrete\" />

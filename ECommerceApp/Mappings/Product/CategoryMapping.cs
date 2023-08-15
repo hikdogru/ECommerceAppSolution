@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ECommerceApp.Core.Domain.Entities;
-using ECommerceApp.WebUI.Models;
+using ECommerceApp.WebUI.Models.Category;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;

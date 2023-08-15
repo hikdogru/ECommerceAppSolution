@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using AutoMapper;
 using ECommerceApp.Core.Domain.Entities;
+using ECommerceApp.Core.Extensions;
 using ECommerceApp.Core.Helpers;
 using ECommerceApp.Core.Services.Abstract;
-using ECommerceApp.WebUI.Models;
+using ECommerceApp.WebUI.Models.Category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MongoDB.Bson;
@@ -39,18 +40,21 @@ namespace ECommerceApp.WebUI.Controllers
         }
 
 
-        public IActionResult GetAll(int page, int pageSize, string filter)
+        public async Task<IActionResult> GetAll(int page, int pageSize, string filter)
         {
-            var data = _categoryService.GetAll().Select(x => new
+            var allData = _categoryService.GetAll();
+            var pagedData = await allData.ToPagedListAsync(page, pageSize);
+            var data = pagedData.Select(x => new CategoryViewModel()
             {
                 Id = x.Id,
-                IsActive = x.IsActive
-            }).ToList();//_context.MyData.Where(d => d.SomeProperty.Contains(filter)).Skip((page - 1) * pageSize).Take(pageSize);
-            return Json(new { data, data.Count });
+                IsActive = x.IsActive,
+                Name = !x.CategoryLanguages.Any()
+                        ? ""
+                        : x.CategoryLanguages.FirstOrDefault(l => !string.IsNullOrEmpty(l.Name)).Name,
+            }).AsQueryable();
+            int total = allData.Count();
+            return Json(new { data, total });
         }
-
-
-
 
 
         public IActionResult Create()

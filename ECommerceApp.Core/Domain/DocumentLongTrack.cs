@@ -1,8 +1,13 @@
-﻿namespace ECommerceApp.Core.Domain;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
-public class DocumentLongTrack : Document
+namespace ECommerceApp.Core.Domain;
+
+public class DocumentLongTrack : DocumentShortTrack
 {
     public string UpdatedUser { get; set; }
 
+    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime UpdatedDate { get; set; }
+
+    public bool IsDeleted { get; set; } = false;
 }
