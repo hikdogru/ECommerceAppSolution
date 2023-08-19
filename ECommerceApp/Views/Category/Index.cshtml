@@ -1,10 +1,23 @@
 ﻿@section TopLevelCss
     {
     <style>
-        .k-grid-toolbar {
-            display: flex !important;
-            justify-content: flex-end !important;
+        .k-toolbar {
+            display: block !important;
         }
+
+            .k-toolbar .k-searchbox {
+                float: left !important;
+                width: 15rem !important;
+            }
+
+            .k-toolbar button {
+                float: right !important;
+            }
+
+        .k-link-clear {
+            margin-right: .428em;
+        }
+
     </style>
     <link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet" type="text/css">
 }
@@ -91,7 +104,7 @@
                     read: {
                         url: "@Url.Action("GetAll", "Category")",
                         dataType: "json",
-                        type: "GET"
+                        type: "post"
                     },
                     update: {
                         url: "/Employee/UpdatePost",
@@ -145,6 +158,11 @@
                         }
                     }
                 },
+                search: {
+                    fields: [
+                        { name: "name", operator: "contains" }
+                    ]
+                },
                 excel: {
                     fileName: "products.xlsx",
                     allPages: true,
@@ -154,7 +172,12 @@
                 },
                 toolbar:
                     [
-                        { name: "create", text: "Add new item", template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>', width: 10 },
+                        { name: "search" },
+                        {
+                            name: "create",
+                            text: "Add new item",
+                            template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>'
+                        },
                         { name: "excel" }
                     ],
                 columns:
@@ -162,30 +185,30 @@
                         { field: "id", title: "Id", width: 20, editable: false, hidden: true },
                         {
                             field: "name",
-                            title: "Name",
+                            title: "Ürün",
                             width: 20,
                             template: function (dataItem) {
 
                                 return `
-                                        <div class="d-flex">
-                                            <!--begin::Thumbnail-->
-                                            <a href="edit-category.html" class="symbol symbol-40px">
-                                                <span class="symbol-label" style="background-image:url(../../../assets/media/stock/ecommerce/68.gif);"></span>
-                                            </a>
-                                            <!--end::Thumbnail-->
+                                                                                                <div class="d-flex">
+                                                                                                    <!--begin::Thumbnail-->
+                                                                                                    <a href="edit-category.html" class="symbol symbol-40px">
+                                                                                                        <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
+                                                                                                    </a>
+                                                                                                    <!--end::Thumbnail-->
 
-                                            <div class="ms-5">
-                                                <!--begin::Description-->
-                                                <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
-                                                <!--end::Description-->
-                                            </div>
-                                        </div>
-                                        `;
+                                                                                                    <div class="ms-5">
+                                                                                                        <!--begin::Description-->
+                                                                                                        <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                                                                        <!--end::Description-->
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                `;
                             }
                         },
                         {
                             field: "isActive",
-                            title: "Is Active",
+                            title: "Aktif mi",
                             width: 20,
                             template: function (dataItem) {
                                 if (dataItem.isActive == true) {
@@ -193,16 +216,41 @@
                                 } else {
                                     return '<span class="k-icon k-i-close text-danger"></span>';
                                 }
+                            },
+                            filterable: {
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        eq: "Eşit"
+                                    }
+                                },
+                                ui: function (element) {
+                                    element.kendoDropDownList({
+                                        dataSource: [
+                                            { text: "Aktif", value: true },
+                                            { text: "Pasif", value: false }
+                                        ],
+                                        optionLabel: "Seç...",
+                                        dataTextField: "text",
+                                        dataValueField: "value"
+                                    });
+                                }
                             }
                         }
                     ]
-
-
             });
 
 
             $("#grid th").css("text-align", "center");
             $("#grid tbody").css("text-align", "center");
+
+            // For to clear search input
+            let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
+            $(".k-grid-search").append(clearButton);
+            $(".k-link-clear").click(function () {
+                $(".k-grid-search input").val("").trigger("input");
+            });
+
 
         });
 

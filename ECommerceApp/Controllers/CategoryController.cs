@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using AutoMapper;
+using ECommerceApp.Application.Services.Abstract;
+using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities;
+using ECommerceApp.Core.DTOs;
 using ECommerceApp.Core.Extensions;
 using ECommerceApp.Core.Helpers;
-using ECommerceApp.Core.Services.Abstract;
 using ECommerceApp.WebUI.Models.Category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -39,21 +41,23 @@ namespace ECommerceApp.WebUI.Controllers
             return View();
         }
 
-
-        public async Task<IActionResult> GetAll(int page, int pageSize, string filter)
+        [HttpPost]
+        public async Task<IActionResult> GetAll(int page, int pageSize = 10, GridFilters? filter = null)
         {
-            var allData = _categoryService.GetAll();
-            var pagedData = await allData.ToPagedListAsync(page, pageSize);
-            var data = pagedData.Select(x => new CategoryViewModel()
+            try
             {
-                Id = x.Id,
-                IsActive = x.IsActive,
-                Name = !x.CategoryLanguages.Any()
-                        ? ""
-                        : x.CategoryLanguages.FirstOrDefault(l => !string.IsNullOrEmpty(l.Name)).Name,
-            }).AsQueryable();
-            int total = allData.Count();
-            return Json(new { data, total });
+                // Todo : Filtrelemeye devam edilecek. 
+                var pagedCategories = await _categoryService.Filter(page, pageSize, filter);
+                var listOfCategories = pagedCategories.Select((x) => x);
+                var mappedCategories = _mapper.Map<IEnumerable<CategoryViewModel>>(listOfCategories);
+                int total = pagedCategories.TotalItems;
+                return Json(new { data = mappedCategories, total });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
 

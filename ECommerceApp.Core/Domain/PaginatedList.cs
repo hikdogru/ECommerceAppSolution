@@ -6,6 +6,7 @@ public abstract class PaginatedList<T> : List<T>
 {
     public int CurrentPage { get; protected set; }
     public int TotalPages { get; protected set; }
+    public int TotalItems { get; protected set; }
     internal IQueryable<T> source;
 
     public bool HasPreviousPage

@@ -1,8 +1,8 @@
-﻿using ECommerceApp.Core.Domain.Interfaces;
+﻿using ECommerceApp.Application.Services.Abstract;
+using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
-using ECommerceApp.Core.Services.Abstract;
 
-namespace ECommerceApp.Core.Services.Concrete;
+namespace ECommerceApp.Application.Services.Concrete;
 
 public class CRUDService<TRepository, TEntity, TKey> : ICRUDService<TEntity, TKey> where TEntity : IEntity<TKey>
     where TRepository : IRepository<TEntity, TKey>

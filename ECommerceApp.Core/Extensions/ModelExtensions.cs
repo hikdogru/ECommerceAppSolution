@@ -1,16 +1,18 @@
 ﻿using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Helpers;
+using MongoDB.Driver.Linq;
 
 namespace ECommerceApp.Core.Extensions;
 
 public static class ModelExtensions
 {
-    public static async Task<PaginatedList<T>> ToPagedListAsync<T>(this IQueryable<T> source, int page, int pageSize)
+    public static async Task<PaginatedList<T>> ToPagedListAsync<T>(this IQueryable<T> source, int page, int pageSize, Type type)
     {
-        if (source is IQueryable<T> mongoSource)
+        if (type.Name is "IMongoQueryable")
         {
-            var model = new MongoDbPaginatedList<T>(mongoSource);
-            return await model.CreateAsync(page, pageSize);
+            var model = new MongoDbPaginatedList<T>(source);
+            var paginatedList = await model.CreateAsync(page, pageSize);
+            return paginatedList;
         }
         else if (source is IQueryable<T> efSource)
         {
@@ -22,4 +24,6 @@ public static class ModelExtensions
             throw new ArgumentException("The queryable source must be either an EF or MongoDB source.");
         }
     }
+
+
 }

@@ -1,6 +1,6 @@
 ﻿using ECommerceApp.Core.Domain.Interfaces;
 
-namespace ECommerceApp.Core.Services.Abstract;
+namespace ECommerceApp.Application.Services.Abstract;
 
 public interface ICRUDService<TEntity, TKey> where TEntity : IEntity<TKey>
 {

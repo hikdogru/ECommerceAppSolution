@@ -15,11 +15,12 @@ public class MongoDbPaginatedList<T> : PaginatedList<T>
     {
         try
         {
-            var count = await ((IMongoQueryable<T>)source).CountAsync();
+            var count = source.Count();
             CurrentPage = page;
             TotalPages = (int)System.Math.Ceiling(count / (double)pageSize);
-            var items = await ((IMongoQueryable<T>)source).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-            AddRange(items.ToList());
+            var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            AddRange(items);
+            TotalItems = count;
             return this;
 
         }

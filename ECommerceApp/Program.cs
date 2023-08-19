@@ -1,8 +1,8 @@
+using ECommerceApp.Application.Services.Abstract;
+using ECommerceApp.Application.Services.Concrete;
 using ECommerceApp.Core.Domain.Entities;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
-using ECommerceApp.Core.Services.Abstract;
-using ECommerceApp.Core.Services.Concrete;
 using ECommerceApp.Infrastructure.Context;
 using ECommerceApp.Infrastructure.Repositories;
 using ECommerceApp.WebUI.Mappings.Product;
