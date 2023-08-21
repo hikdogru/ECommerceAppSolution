@@ -69,9 +69,8 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
 
     public async Task Remove(TDocument obj)
     {
-        if (typeof(TDocument).IsAssignableTo(typeof(DocumentLongTrack)))
+        if (typeof(TDocument).IsAssignableTo(typeof(DocumentLongTrack)) && obj is DocumentLongTrack documentAsLongTrack)
         {
-            var documentAsLongTrack = obj as DocumentLongTrack;
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
             documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             documentAsLongTrack.IsDeleted = true;

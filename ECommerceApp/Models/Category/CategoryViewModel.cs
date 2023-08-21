@@ -6,6 +6,8 @@ public class CategoryViewModel
 {
     public ObjectId Id { get; set; }
 
+    public string RefId { get; set; }
+
     public string Name { get; set; }
 
     public bool IsActive { get; set; }

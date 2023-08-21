@@ -106,12 +106,6 @@
                         dataType: "json",
                         type: "post"
                     },
-                    update: {
-                        url: "/Employee/UpdatePost",
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        type: "post"
-                    },
                     parameterMap: function (options, operation) {
                         if (operation === "read") {
                             options.filter = options.filter || [];
@@ -131,8 +125,6 @@
                 width: "100%",
                 scrollable: true,
                 schema: {
-                    // Bu satırın eklenmesi gerekiyor. Eklenmediği hâlde tüm satırları seçmiyor.
-                    model: { id: "Id" },
                     data: "data",
                     total: "total"
                 }
@@ -180,30 +172,31 @@
                         },
                         { name: "excel" }
                     ],
+
                 columns:
                     [
-                        { field: "id", title: "Id", width: 20, editable: false, hidden: true },
+                        { field: "refId", title: "Id", width: 20, hidden: true },
                         {
                             field: "name",
                             title: "Kategori",
-                            width: 20,
+                            width: 30,
                             template: function (dataItem) {
 
                                 return `
-                                            <div class="d-flex">
-                                                <!--begin::Thumbnail-->
-                                                <a href="edit-category.html" class="symbol symbol-40px">
-                                                    <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
-                                                </a>
-                                                <!--end::Thumbnail-->
+                                                    <div class="d-flex">
+                                                        <!--begin::Thumbnail-->
+                                                        <a href="edit-category.html" class="symbol symbol-40px">
+                                                            <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
+                                                        </a>
+                                                        <!--end::Thumbnail-->
 
-                                                <div class="ms-5">
-                                                    <!--begin::Description-->
-                                                    <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
-                                                    <!--end::Description-->
-                                                </div>
-                                            </div>
-                                            `;
+                                                        <div class="ms-5">
+                                                            <!--begin::Description-->
+                                                            <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                            <!--end::Description-->
+                                                        </div>
+                                                    </div>
+                                                    `;
                             },
                             // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
                             filterable: false
@@ -211,7 +204,7 @@
                         {
                             field: "hierarchy",
                             title: "Hiyerarşi",
-                            width: 20,
+                            width: 30,
                             filterable: false
                         },
                         {
@@ -244,6 +237,14 @@
                                     });
                                 }
                             }
+                        },
+                        {
+                            command: [
+                                { name: "detail", text: "Detail", template: '<button class="btn btn-success btn-sm m-1" id="btnDetail"><span class="k-icon k-i-eye k-icon-18"></span></button>', width: 9 },
+                                { name: "delete", text: "Delete", template: '<button class="btn btn-danger btn-sm" id="btnDelete"><span class="k-icon k-i-trash k-icon-18"></span></button>', width: 9 }
+                            ],
+                            title: "&nbsp;",
+                            width: 18
                         }
                     ]
             });
@@ -260,14 +261,52 @@
                 });
 
 
+            $("#grid").on("click",
+                "#btnDetail",
+                function (e) {
+                    e.preventDefault();
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    // Todo: id değeri boş geliyor. Bakılacak.
+                    window.open("@Url.Action("Edit", "Category")/" + dataItem.id, "_blank");
+                });
+
+
+            $("#grid").on("click",
+                "#btnDelete",
+                function (e) {
+                    e.preventDefault();
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    if (confirm("Kayıt Silinsin Mi?")) {
+                        // Perform the delete operation
+                        $.ajax({
+                            url: "@Url.Action("Delete", "Category")",
+                            type: "DELETE",
+                            data: { id: dataItem.refId },
+                            success: function (result) {
+
+                                var dataSource = $("#grid").data("kendoGrid").dataSource;
+                                // Refresh the grid
+                                dataSource.read();
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle errors here
+                                console.error(error);
+                            },
+                        });
+                    }
+
+                });
+
             // For to clear search input
             let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
             $(".k-grid-search").append(clearButton);
             $(".k-link-clear").click(function () {
                 $(".k-grid-search input").val("").trigger("input");
             });
-
-
         });
 
     </script>

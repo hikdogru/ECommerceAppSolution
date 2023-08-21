@@ -25,6 +25,7 @@ public class CategoryMapping : Profile
 
         CreateMap<CategoryDTO, CategoryViewModel>()
             .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
+            .ForMember(dest => dest.RefId, act => act.MapFrom(src => src.Id.ToString()))
             .ForMember(dest => dest.Name, act => act.MapFrom(src => src.CategoryLanguages.FirstOrDefault(l => !string.IsNullOrEmpty(l.Name)).Name))
             .ForMember(dest => dest.IsActive, act => act.MapFrom(src => src.IsActive))
             .ForMember(dest => dest.MediaPath, act => act.MapFrom(src => src.CategoryMedias.FirstOrDefault(m => !string.IsNullOrEmpty(m.Path)).Path));

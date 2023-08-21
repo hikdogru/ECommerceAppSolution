@@ -129,6 +129,22 @@ namespace ECommerceApp.WebUI.Controllers
             }
             return View(model);
         }
+
+        [HttpDelete]
+        public async Task Delete(string id, object result)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                _toastNotification.AddErrorToastMessage("Id is null or empty!");
+            }
+            var category = _categoryService.GetAll().ToList().FirstOrDefault(x => x.Id == ObjectId.Parse(id));
+            if (category == null)
+            {
+                _toastNotification.AddErrorToastMessage("Category not found!");
+            }
+            await _categoryService.Delete(category);
+            _toastNotification.AddSuccessToastMessage("Category deleted successfully!");
+        }
     }
 
 
