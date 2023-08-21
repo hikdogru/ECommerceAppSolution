@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Xml.Linq;
 using AutoMapper;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
@@ -9,6 +10,7 @@ using ECommerceApp.Core.Helpers;
 using ECommerceApp.WebUI.Models.Category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using NToastNotify;
@@ -46,10 +48,11 @@ namespace ECommerceApp.WebUI.Controllers
         {
             try
             {
-                // Todo : Filtrelemeye devam edilecek. 
                 var pagedCategories = await _categoryService.Filter(page, pageSize, filter);
                 var listOfCategories = pagedCategories.Select((x) => x);
-                var mappedCategories = _mapper.Map<IEnumerable<CategoryViewModel>>(listOfCategories);
+                var mappedCategories = _mapper.Map<IEnumerable<CategoryViewModel>>(listOfCategories).ToList();
+                var categoryHierarchies = _categoryService.GetCategoryTree().Where(c => mappedCategories.Any(mc => mc.Id == c.Id));
+                mappedCategories.ForEach(c => c.Hierarchy = categoryHierarchies.FirstOrDefault(ch => ch.Id == c.Id)?.Text);
                 int total = pagedCategories.TotalItems;
                 return Json(new { data = mappedCategories, total });
             }
@@ -63,6 +66,16 @@ namespace ECommerceApp.WebUI.Controllers
 
         public IActionResult Create()
         {
+            var categories = _categoryService.GetCategoryTree()
+                                            .ToList()
+                                            .Select(c => new SelectListItem()
+                                            {
+                                                Text = c.Text,
+                                                Value = c.Id.ToString()
+                                            });
+
+            ViewBag.Categories = categories;
+
             return View(new CategoryModel()
             {
                 CategoryLanguages = new List<CategoryLanguageModel>()

@@ -185,26 +185,34 @@
                         { field: "id", title: "Id", width: 20, editable: false, hidden: true },
                         {
                             field: "name",
-                            title: "Ürün",
+                            title: "Kategori",
                             width: 20,
                             template: function (dataItem) {
 
                                 return `
-                                                                                                <div class="d-flex">
-                                                                                                    <!--begin::Thumbnail-->
-                                                                                                    <a href="edit-category.html" class="symbol symbol-40px">
-                                                                                                        <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
-                                                                                                    </a>
-                                                                                                    <!--end::Thumbnail-->
+                                            <div class="d-flex">
+                                                <!--begin::Thumbnail-->
+                                                <a href="edit-category.html" class="symbol symbol-40px">
+                                                    <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
+                                                </a>
+                                                <!--end::Thumbnail-->
 
-                                                                                                    <div class="ms-5">
-                                                                                                        <!--begin::Description-->
-                                                                                                        <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
-                                                                                                        <!--end::Description-->
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                `;
-                            }
+                                                <div class="ms-5">
+                                                    <!--begin::Description-->
+                                                    <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                    <!--end::Description-->
+                                                </div>
+                                            </div>
+                                            `;
+                            },
+                            // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
+                            filterable: false
+                        },
+                        {
+                            field: "hierarchy",
+                            title: "Hiyerarşi",
+                            width: 20,
+                            filterable: false
                         },
                         {
                             field: "isActive",
@@ -243,6 +251,14 @@
 
             $("#grid th").css("text-align", "center");
             $("#grid tbody").css("text-align", "center");
+
+            $("#grid").on("click",
+                "#btnCreate",
+                function (e) {
+                    e.preventDefault();
+                    window.open("@Url.Action("Create", "Category")", "_blank");
+                });
+
 
             // For to clear search input
             let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';

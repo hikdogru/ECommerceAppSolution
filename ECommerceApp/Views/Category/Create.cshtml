@@ -75,9 +75,9 @@
                             }
                             @foreach (var categoryMedia in Model.CategoryMedias)
                             {
-
+                                var langCode = categoryMedia?.LanguageCode;
                                 <li class="nav-item">
-                                    <a class="nav-link @(i == 1 ? "active" : "")" data-bs-toggle="tab" href="#mediaTabPanel@(categoryMedia.LanguageCode)">@categoryMedia.LanguageCode</a>
+                                    <a class="nav-link @(i == 1 ? "active" : "")" data-bs-toggle="tab" href="#mediaTabPanel@(langCode)">@langCode</a>
                                 </li>
 
                                 i++;
@@ -222,14 +222,8 @@
 
                     <div class="card p-4">
                         <label class="form-label">Parent Category</label>
-                        <select asp-for="ParentId" class="form-select mb-3">
+                        <select asp-for="ParentId" asp-items="ViewBag.Categories" class="form-select mb-3" data-control="select2">
                             <option value="">No Parent</option>
-                            <option value="1">Parent 1</option>
-                            <option value="2">Parent 2</option>
-                            <option value="3">Parent 3</option>
-                            <option value="4">Parent 4</option>
-                            <option value="5">Parent 5</option>
-
                         </select>
 
                         <span asp-validation-for="ParentId" class="text-danger"></span>

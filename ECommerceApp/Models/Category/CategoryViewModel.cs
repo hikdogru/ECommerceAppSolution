@@ -11,4 +11,6 @@ public class CategoryViewModel
     public bool IsActive { get; set; }
 
     public string? MediaPath { get; set; }
+
+    public string? Hierarchy { get; set; }
 }

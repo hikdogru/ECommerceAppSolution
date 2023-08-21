@@ -1,4 +1,5 @@
 ﻿using AutoMapper.QueryableExtensions;
+using ECommerceApp.Application.Models;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities;
@@ -41,6 +42,35 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
         var deserializedCategories = BsonSerializer.Deserialize<List<CategoryDTO>>(categoriesAsJson);
         var pagedData = await deserializedCategories.AsQueryable().ToPagedListAsync(page, pageSize, typeof(IMongoQueryable));
         return pagedData;
+    }
+
+    public List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "English", string seperator = " > ")
+    {
+        var allCategories = GetAll().ToList();
+        Func<Category, List<Category>, string>? parents = null;
+        parents = (c, l) =>
+        {
+            string? cs = null;
+            var p = l.FirstOrDefault(m => !string.IsNullOrEmpty(c.ParentId) && m.Id == ObjectId.Parse(c.ParentId));
+            if (p != null)
+            {
+                cs = p.CategoryLanguages.FirstOrDefault(m => m.LanguageCode == languageCode)?.Name;
+                if (!string.IsNullOrEmpty(p.ParentId))
+                {
+                    cs = parents(p, l) + " > " + cs;
+                }
+            }
+            return cs;
+        };
+        var lastdepthCategories = allCategories.ToList();
+        var categoryTreeArrows = new List<CategoryTreeArrowModel>();
+        foreach (var f in lastdepthCategories)
+        {
+            string upname = parents(f, allCategories);
+            var c = new CategoryTreeArrowModel { Id = f.Id, Text = (string.IsNullOrEmpty(upname) ? "" : upname + " > ") + f.CategoryLanguages.FirstOrDefault(m => m.LanguageCode == languageCode)?.Name };
+            categoryTreeArrows.Add(c);
+        }
+        return categoryTreeArrows;
     }
 
 }
