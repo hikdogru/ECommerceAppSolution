@@ -38,15 +38,25 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
             }
         }
 
-        var categoriesAsJson = allData.ToJson();
+        var categoriesAsJson = allData.Where(x => !x.IsDeleted)
+                                       .ToJson();
         var deserializedCategories = BsonSerializer.Deserialize<List<CategoryDTO>>(categoriesAsJson);
         var pagedData = await deserializedCategories.AsQueryable().ToPagedListAsync(page, pageSize, typeof(IMongoQueryable));
         return pagedData;
     }
 
+    public async Task<CategoryDetailDTO> GetCategoryById(ObjectId id)
+    {
+        var category = await base.GetById(id);
+        var categoryJson = category.ToJson();
+        var deserializedCategory = BsonSerializer.Deserialize<CategoryDetailDTO>(categoryJson);
+        return deserializedCategory;
+    }
+
+
     public List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "English", string seperator = " > ")
     {
-        var allCategories = GetAll().ToList();
+        var allCategories = GetAll().Where(x => !x.IsDeleted).ToList();
         Func<Category, List<Category>, string>? parents = null;
         parents = (c, l) =>
         {
@@ -73,5 +83,18 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
         return categoryTreeArrows;
     }
 
+    public override async Task Delete(Category entity, bool isBulk = false)
+    {
+        await base.Delete(entity);
+        var subCategories = GetAll().ToList()
+                                    .Where(c => !string.IsNullOrEmpty(c.ParentId) && ObjectId.Parse(c.ParentId) == entity.Id);
+        if (subCategories.Any())
+        {
+            foreach (var subCategory in subCategories)
+            {
+                await base.Delete(subCategory);
+            }
+        }
+    }
 }
 

@@ -269,7 +269,7 @@
                     var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
 
                     // Todo: id değeri boş geliyor. Bakılacak.
-                    window.open("@Url.Action("Edit", "Category")/" + dataItem.id, "_blank");
+                    window.open("@Url.Action("Edit", "Category")/" + dataItem.refId, "_blank");
                 });
 
 
@@ -293,7 +293,6 @@
                                 dataSource.read();
                             },
                             error: function (xhr, status, error) {
-                                // Handle errors here
                                 console.error(error);
                             },
                         });

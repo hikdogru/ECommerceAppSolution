@@ -130,6 +130,33 @@ namespace ECommerceApp.WebUI.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(ObjectId id)
+        {
+            if (string.IsNullOrEmpty(id.ToString()))
+            {
+                _toastNotification.AddErrorToastMessage("Id is null or empty!");
+            }
+
+            var category = await _categoryService.GetCategoryById(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            var mappedCategory = _mapper.Map<CategoryModel>(category);
+            var categories = _categoryService.GetCategoryTree()
+                .ToList()
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Text,
+                    Value = c.Id.ToString()
+                });
+
+            ViewBag.Categories = categories;
+            return View(mappedCategory);
+        }
+
         [HttpDelete]
         public async Task Delete(string id, object result)
         {
@@ -145,6 +172,8 @@ namespace ECommerceApp.WebUI.Controllers
             await _categoryService.Delete(category);
             _toastNotification.AddSuccessToastMessage("Category deleted successfully!");
         }
+
+
     }
 
 

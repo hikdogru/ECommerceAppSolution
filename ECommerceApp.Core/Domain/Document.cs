@@ -7,6 +7,7 @@ namespace ECommerceApp.Core.Domain;
 public class Document : IEntity<ObjectId>
 {
     [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
     [BsonIgnoreIfDefault]
     public ObjectId Id { get; set; }
 }

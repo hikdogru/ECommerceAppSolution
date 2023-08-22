@@ -1,6 +1,7 @@
 ﻿using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
+using MongoDB.Bson;
 
 namespace ECommerceApp.Application.Services.Concrete;
 
@@ -34,6 +35,11 @@ public class CRUDService<TRepository, TEntity, TKey> : ICRUDService<TEntity, TKe
     public virtual IQueryable<TEntity> GetAll()
     {
         return Repository.GetAll();
+    }
+
+    public virtual async Task<TEntity> GetById(ObjectId id)
+    {
+        return await Repository.GetById(id);
     }
 
     public virtual async Task Delete(TEntity entity, bool isBulk = false)

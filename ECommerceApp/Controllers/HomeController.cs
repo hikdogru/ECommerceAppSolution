@@ -17,24 +17,6 @@ namespace ECommerceApp.WebUI.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var category = new Category
-            //{
-            //    IsActive = false,
-            //    ParentId = ObjectId.GenerateNewId().ToString(),
-            //    CategoryLanguages = new List<CategoryLanguage>
-            //    {
-            //        new()
-            //        {
-            //            LanguageCode = "en",
-            //            LanguageId = Guid.NewGuid().ToString(),
-            //            Name = "Test Category",
-            //            Description = "Test category description",
-            //            SortNr = 10
-            //        }
-            //    }
-            //};
-
-            //await _categoryRepository.Add(category);
             return View();
         }
 
@@ -44,8 +26,12 @@ namespace ECommerceApp.WebUI.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(int? statusCode)
         {
+            if (statusCode.HasValue && statusCode == StatusCodes.Status404NotFound)
+            {
+                return View("404");
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

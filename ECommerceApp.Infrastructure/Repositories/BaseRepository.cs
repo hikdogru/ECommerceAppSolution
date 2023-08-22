@@ -63,8 +63,10 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
             documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             documentAsLongTrack.IsDeleted = true;
+            Context.AddCommand(async () => await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj));
         }
-        Context.AddCommand(() => DbSet.DeleteOneAsync(Builders<TDocument>.Filter.Eq("_id", id)));
+        else
+            Context.AddCommand(() => DbSet.DeleteOneAsync(Builders<TDocument>.Filter.Eq("_id", id)));
     }
 
     public async Task Remove(TDocument obj)
@@ -74,8 +76,10 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
             documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             documentAsLongTrack.IsDeleted = true;
+            await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
         }
-        await DbSet.DeleteOneAsync(e => e.Id == obj.Id);
+        else
+            await DbSet.DeleteOneAsync(e => e.Id == obj.Id);
     }
 
     public async Task SaveChanges()

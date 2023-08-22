@@ -30,7 +30,7 @@ public class CategoryMapping : Profile
             .ForMember(dest => dest.IsActive, act => act.MapFrom(src => src.IsActive))
             .ForMember(dest => dest.MediaPath, act => act.MapFrom(src => src.CategoryMedias.FirstOrDefault(m => !string.IsNullOrEmpty(m.Path)).Path));
 
-
+        CreateMap<CategoryDetailDTO, CategoryModel>();
         CreateMap<CategoryLanguage, CategoryLanguageModel>().ReverseMap();
         CreateMap<CategoryMedia, CategoryMediaModel>().ReverseMap();
     }

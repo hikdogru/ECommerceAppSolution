@@ -31,7 +31,4 @@ public class CategoryModel
 
     // Category Medias
     public List<CategoryMediaModel?> CategoryMedias { get; set; } = new();
-
-    // Parent categories
-    public List<string> ParentCategories { get; set; } = new();
 }

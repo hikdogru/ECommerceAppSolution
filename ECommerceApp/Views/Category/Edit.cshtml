@@ -14,14 +14,14 @@
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 ">
                 <!--begin::Title-->
                 <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
-                    Add Category
+                    Edit Category
                 </h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
-                        <a href="../../../index.html" class="text-muted text-hover-primary">
+                        <a href="/" class="text-muted text-hover-primary">
                             Home
                         </a>
                     </li>
@@ -136,7 +136,7 @@
                                         <!--begin::Image input-->
                                         <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3" data-kt-image-input="true">
                                             <!--begin::Preview existing avatar-->
-                                            <div class="image-input-wrapper w-150px h-150px"></div>
+                                            <div class="image-input-wrapper w-150px h-150px" style="background: url(/assets/images/@categoryMedia.Path);background-size: cover;"></div>
                                             <!--end::Preview existing avatar-->
                                             <!--begin::Label-->
                                             <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" aria-label="Change avatar" data-bs-original-title="Change avatar" data-kt-initialized="1">
@@ -193,7 +193,7 @@
                             <!--end::Card title-->
                             <!--begin::Card toolbar-->
                             <div class="card-toolbar">
-                                <div class="rounded-circle bg-danger w-15px h-15px" id="categoryStatus"></div>
+                                <div class="rounded-circle @(Model.IsActive ? "bg-success": "bg-danger") w-15px h-15px" id="categoryStatus"></div>
                             </div>
                             <!--begin::Card toolbar-->
                         </div>

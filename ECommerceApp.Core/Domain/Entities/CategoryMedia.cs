@@ -15,6 +15,9 @@ public class CategoryMedia
     // Language Id
     public string LanguageId { get; set; }
 
+    // Language Code
+    public string LanguageCode { get; set; }
+
     /// <summary>
     /// Media Type (Video, image etc MediaTypes enum)
     /// </summary>

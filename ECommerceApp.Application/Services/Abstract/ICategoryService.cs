@@ -9,5 +9,6 @@ namespace ECommerceApp.Application.Services.Abstract;
 public interface ICategoryService : ICRUDService<Category, ObjectId>
 {
     Task<PaginatedList<CategoryDTO>> Filter(int page, int pageSize, GridFilters? filter = null);
+    Task<CategoryDetailDTO> GetCategoryById(ObjectId id);
     List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "English", string seperator = " > ");
 }
