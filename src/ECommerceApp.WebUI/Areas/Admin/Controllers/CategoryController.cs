@@ -16,8 +16,9 @@ using MongoDB.Bson.Serialization;
 using NToastNotify;
 
 
-namespace ECommerceApp.WebUI.Controllers
+namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -147,6 +148,7 @@ namespace ECommerceApp.WebUI.Controllers
             var mappedCategory = _mapper.Map<CategoryModel>(category);
             var categories = _categoryService.GetCategoryTree()
                 .ToList()
+                .Where(c => c.Id != category.Id)
                 .Select(c => new SelectListItem()
                 {
                     Text = c.Text,
@@ -154,11 +156,72 @@ namespace ECommerceApp.WebUI.Controllers
                 });
 
             ViewBag.Categories = categories;
+
+            // Todo: Refactor this code
+            var languages = new CategoryModel()
+            {
+                CategoryLanguages = new List<CategoryLanguageModel>()
+                {
+                    new()
+                    {
+                        LanguageCode = "English",
+                        LanguageId = "1"
+                    },
+                    new()
+                    {
+                        LanguageCode = "Turkish",
+                        LanguageId = "2"
+                    }
+                },
+                CategoryMedias = new List<CategoryMediaModel>()
+                {
+                    new()
+                    {
+                        LanguageId = "1",
+                        LanguageCode = "English"
+                    },
+                    new()
+                    {
+                        LanguageId = "2",
+                        LanguageCode = "Turkish"
+                    }
+                }
+            };
+            var languageIsNotExist = languages.CategoryLanguages.Where(l => !mappedCategory.CategoryLanguages.Any(cl => cl.LanguageId == l.LanguageId)).ToList();
+            var mediaIsNotExist = languages.CategoryMedias.Where(l => !mappedCategory.CategoryMedias.Any(cl => cl.LanguageId == l.LanguageId)).ToList();
+            mappedCategory.CategoryLanguages.AddRange(languageIsNotExist);
+            mappedCategory.CategoryMedias.AddRange(mediaIsNotExist);
+
             return View(mappedCategory);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Edit(CategoryModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string wwwrootPath = _env.WebRootPath;
+                var categoryMedias = model.CategoryMedias.Where(m => m.File != null || !string.IsNullOrEmpty(m.Path)).ToList();
+                if (categoryMedias.Count > 0)
+                {
+                    foreach (var categoryMedia in categoryMedias)
+                    {
+                        if (categoryMedia?.File != null)
+                            categoryMedia.Path = await FileHelper.SaveFile(categoryMedia.File, wwwrootPath);
+                    }
+                }
+
+                var category = _mapper.Map<Category>(model);
+                await _categoryService.Update(category);
+                _toastNotification.AddSuccessToastMessage("Category updated successfully!");
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
         [HttpDelete]
-        public async Task Delete(string id, object result)
+        public async Task Delete(string id)
         {
             if (string.IsNullOrEmpty(id))
             {

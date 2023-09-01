@@ -4,7 +4,7 @@ using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities;
 using ECommerceApp.Core.DTOs;
 using ECommerceApp.Core.Extensions;
-using ECommerceApp.WebUI.Controllers;
+using ECommerceApp.WebUI.Areas.Admin.Controllers;
 using ECommerceApp.WebUI.Models.Category;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

@@ -51,7 +51,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
             documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
         }
-        Context.AddCommand(() => DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj));
+        await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
     }
 
     public virtual async Task Remove(ObjectId id)
@@ -61,12 +61,13 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
             var obj = await GetById(id);
             var documentAsLongTrack = obj as DocumentLongTrack;
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
+            // Todo : Updated User field will be update soon
             documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             documentAsLongTrack.IsDeleted = true;
-            Context.AddCommand(async () => await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj));
+            await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
         }
         else
-            Context.AddCommand(() => DbSet.DeleteOneAsync(Builders<TDocument>.Filter.Eq("_id", id)));
+            await DbSet.DeleteOneAsync(Builders<TDocument>.Filter.Eq("_id", id));
     }
 
     public async Task Remove(TDocument obj)

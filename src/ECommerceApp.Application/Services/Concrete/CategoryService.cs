@@ -1,4 +1,5 @@
-﻿using AutoMapper.QueryableExtensions;
+﻿using System.Text.RegularExpressions;
+using AutoMapper.QueryableExtensions;
 using ECommerceApp.Application.Models;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
@@ -12,6 +13,7 @@ using ECommerceApp.Infrastructure.Mappings;
 using ECommerceApp.Infrastructure.Mappings.Product;
 using MongoDB.Driver.Linq;
 using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
 
 namespace ECommerceApp.Application.Services.Concrete;
@@ -31,8 +33,15 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
         {
             foreach (var field in filter.Filters)
             {
+
                 if (field.Field == "name")
-                    allData = allData.Where(x => x.CategoryLanguages.Any(cl => cl.Name.Contains(field.Value)));
+                {
+                    // Todo: Refactor this - Remove AsEnumerable and AsQueryable
+                    allData = allData.AsEnumerable()
+                        .Where(x => x.CategoryLanguages.Any(cl => cl.Name.ContainsCaseInsensitive(field.Value)))
+                        .AsQueryable();
+                }
+
                 else if (field.Field == "isActive")
                     allData = allData.Where(x => x.IsActive == bool.Parse(field.Value));
             }

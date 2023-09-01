@@ -1,0 +1,312 @@
+﻿@section TopLevelCss
+    {
+    <style>
+        .k-toolbar {
+            display: block !important;
+        }
+
+            .k-toolbar .k-searchbox {
+                float: left !important;
+                width: 15rem !important;
+            }
+
+            .k-toolbar button {
+                float: right !important;
+            }
+
+        .k-link-clear {
+            margin-right: .428em;
+        }
+
+    </style>
+    <link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet" type="text/css">
+}
+
+
+
+<div id="kt_app_toolbar" class="app-toolbar  py-1 py-lg-6 ">
+
+    <!--begin::Toolbar container-->
+    <div id="kt_app_toolbar_container" class="app-container  container-xxl d-flex flex-stack ">
+
+
+
+        <!--begin::Page title-->
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-1 ">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                Categories
+            </h1>
+            <!--end::Title-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="/" class="text-muted text-hover-primary">
+                        Home
+                    </a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Product
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Category
+                </li>
+                <!--end::Item-->
+
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+
+    </div>
+    <!--end::Toolbar container-->
+</div>
+
+<div id="kt_app_content" class="app-content  flex-column-fluid " data-select2-id="select2-data-kt_app_content">
+
+
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container  container-xxl " data-select2-id="select2-data-kt_app_content_container">
+        <div id="grid"></div>
+    </div>
+</div>
+
+@section TopLevelJS
+    {
+    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/messages/kendo.messages.tr-TR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
+}
+
+
+@section Scripts
+{
+    <script>
+        // kendo grid
+        $(document).ready(function() {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetAll", "Category", new {area = "Admin"})',
+                        dataType: "json",
+                        type: "post"
+                    },
+                    parameterMap: function(options, operation) {
+                        if (operation === "read") {
+                            options.filter = options.filter || [];
+                            return {
+                                page: options.page,
+                                pageSize: options.pageSize,
+                                filter: options.filter
+                            };
+                        }
+                    }
+                },
+
+                pageSize: 10,
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                width: "100%",
+                scrollable: true,
+                schema: {
+                    model: {
+                        fields: {
+                            isActive: { type: "boolean" }
+                        }
+                    },
+                data: "data",
+                total: "total"
+            }
+        });
+
+        $("#grid").kendoGrid({
+            dataSource: dataSource,
+            navigatable: true,
+            pageable: {
+                refresh: true,
+                pageSizes: true,
+                buttonCount: 5
+            },
+            filterable: {
+                operators: {
+                    string: {
+                        eq: "Eşit",
+                        neq: "Eşit Değil",
+                        startswith: "Başlayan",
+                        contains: "İçeren",
+                        doesnotcontain: "İçermeyen",
+                        endswith: "Biten"
+                    }
+                }
+            },
+            search: {
+                fields: [
+                    { name: "name", operator: "contains" }
+                ]
+            },
+            excel: {
+                fileName: "products.xlsx",
+                allPages: true,
+                columns: [
+                    { field: "name", width: 75 }
+                ]
+            },
+            toolbar:
+            [
+                { name: "search" },
+                {
+                    name: "create",
+                    text: "Add new item",
+                    template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>'
+                },
+                { name: "excel" }
+            ],
+
+            columns:
+            [
+                { field: "refId", title: "Id", width: 20, hidden: true },
+                {
+                    field: "name",
+                    title: "Kategori",
+                    width: 30,
+                    template: function(dataItem) {
+
+                        return `
+                                                            <div class="d-flex">
+                                                                <!--begin::Thumbnail-->
+                                                                <a href="edit-category.html" class="symbol symbol-40px">
+                                                                    <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
+                                                                </a>
+                                                                <!--end::Thumbnail-->
+
+                                                                <div class="ms-5">
+                                                                    <!--begin::Description-->
+                                                                    <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                                    <!--end::Description-->
+                                                                </div>
+                                                            </div>
+                                                            `;
+                    },
+                    // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
+                    filterable: false
+                },
+                {
+                    field: "hierarchy",
+                    title: "Hiyerarşi",
+                    width: 30,
+                    filterable: false
+                },
+                {
+                    field: "isActive",
+                    title: "Aktif mi",
+                    width: 20,
+                    template: function(dataItem) {
+                        if (dataItem.isActive == true) {
+                            return '<span class="k-icon k-i-check text-success"></span>';
+                        } else {
+                            return '<span class="k-icon k-i-close text-danger"></span>';
+                        }
+                    },
+                    filterable: {
+                        
+                        ui: function(element) {
+                            element.kendoDropDownList({
+                                dataSource: [
+                                    { text: "Aktif", value: true },
+                                    { text: "Pasif", value: false }
+                                ],
+                                optionLabel: "Seç...",
+                                dataTextField: "text",
+                                dataValueField: "value"
+                            });
+                        }
+                    }
+                },
+                {
+                    command: [
+                        { name: "detail", text: "Detail", template: '<button class="btn btn-success btn-sm m-1" id="btnDetail"><span class="k-icon k-i-eye k-icon-18"></span></button>', width: 9 },
+                        { name: "delete", text: "Delete", template: '<button class="btn btn-danger btn-sm" id="btnDelete"><span class="k-icon k-i-trash k-icon-18"></span></button>', width: 9 }
+                    ],
+                    title: "&nbsp;",
+                    width: 18
+                }
+            ]
+        });
+
+
+        $("#grid th").css("text-align", "center");
+        $("#grid tbody").css("text-align", "center");
+
+        $("#grid").on("click",
+            "#btnCreate",
+            function(e) {
+                e.preventDefault();
+                window.open("@Url.Action("Create", "Category", new {Area = "Admin"})", "_blank");
+            });
+
+
+        $("#grid").on("click",
+            "#btnDetail",
+            function(e) {
+                e.preventDefault();
+                var tr = $(this).closest("tr");
+                var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                // Todo: id değeri boş geliyor. Bakılacak.
+                window.open("@Url.Action("Edit", "Category", new {Area = "Admin"})/" + dataItem.refId, "_blank");
+            });
+
+
+        $("#grid").on("click",
+            "#btnDelete",
+            function(e) {
+                e.preventDefault();
+                var tr = $(this).closest("tr");
+                var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                if (confirm("Kayıt Silinsin Mi?")) {
+                    // Perform the delete operation
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Category", new {Area = "Admin"})",
+                        type: "DELETE",
+                        data: { id: dataItem.refId },
+                        success: function(result) {
+
+                            var dataSource = $("#grid").data("kendoGrid").dataSource;
+                            // Refresh the grid
+                            dataSource.read();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        },
+                    });
+                }
+
+            });
+
+        // For to clear search input
+        let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
+        $(".k-grid-search").append(clearButton);
+        $(".k-link-clear").click(function() {
+            $(".k-grid-search input").val("").trigger("input");
+        });
+    });
+
+    </script>
+}

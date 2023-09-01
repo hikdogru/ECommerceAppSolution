@@ -40,17 +40,36 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 app.UseRouting();
 
+
 app.UseAuthorization();
 
 app.UseNToastNotify();
 
+
+app.MapAreaControllerRoute(
+    areaName: "Admin",
+    name: "Admin Area",
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+);
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
+
+
+
+
+
+
+
 
 app.Run();

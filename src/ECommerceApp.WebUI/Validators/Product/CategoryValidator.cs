@@ -23,7 +23,7 @@ public class CategoryMediaValidator : AbstractValidator<CategoryMediaModel>
 {
     public CategoryMediaValidator()
     {
-        RuleFor(x => x.File).NotNull().WithMessage("File cannot be null");
+        RuleFor(x => x.File).NotNull().When(x => string.IsNullOrEmpty(x.Path)).WithMessage("File cannot be null");
         RuleFor(x => x.LanguageId).NotNull().WithMessage("Language cannot be null");
         RuleFor(x => x.LanguageCode).NotNull().WithMessage("Language code cannot be null");
         RuleFor(x => x.MediaType).NotNull().WithMessage("Media type cannot be null");

@@ -1,6 +1,6 @@
-﻿using ECommerceApp.WebUI.Models;
+﻿using System.Diagnostics;
+using ECommerceApp.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace ECommerceApp.WebUI.Controllers
 {
@@ -10,7 +10,7 @@ namespace ECommerceApp.WebUI.Controllers
 
 
         public HomeController(ILogger<HomeController> logger
-            )
+        )
         {
             _logger = logger;
         }
