@@ -89,6 +89,33 @@ jobs:
 
      - name: Clean up
        run: docker-compose -f docker-compose.yml down
+   
+
+  docker_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.AZURE_VM_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy Docker Images
+        uses: appleboy/ssh-action@v0.4.2
+        with:
+          host: ${{ secrets.AZURE_VM_HOST }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}  
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ./docker-compose.yml  
+          target: /ecommerceapp/docker-compose.yml  
+          script: |            
+            docker compose pull
+            docker-compose up -d
+
+
 
 
      

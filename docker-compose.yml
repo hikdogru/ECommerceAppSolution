@@ -15,8 +15,8 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - usersecrets:/root/.microsoft/usersecrets:ro
+      - aspnethttps:/root/.aspnet/https:ro
     depends_on:
      - mongo
     networks:
@@ -27,7 +27,7 @@ services:
     ports:     
      - "27017:27017"
     volumes:
-     - ${APPDATA}/MongoDb:/data/db
+     - mongodata:/data/db
     networks:
      - backend
     restart: always
@@ -36,3 +36,8 @@ networks:
    backend:
      driver: bridge
      external: true
+
+volumes:
+  usersecrets:
+  aspnethttps:
+  mongodata:
