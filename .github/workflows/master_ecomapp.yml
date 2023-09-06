@@ -76,7 +76,7 @@ jobs:
          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
      - name: Set up Docker Compose
-       run: docker-compose -f /docker-compose.yml up -d
+       run: docker-compose -f */docker-compose.yml up -d
 
      
 
