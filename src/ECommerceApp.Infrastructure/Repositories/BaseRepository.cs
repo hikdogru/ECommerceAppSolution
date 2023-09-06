@@ -27,7 +27,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
         {
             var documentAsShortTrack = obj as DocumentShortTrack;
             documentAsShortTrack.CreatedDate = DateTime.UtcNow;
-            documentAsShortTrack.CreatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            documentAsShortTrack.CreatedUser = "appuser";
         }
         await DbSet.InsertOneAsync(obj);
     }
@@ -49,7 +49,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
         {
             var documentAsLongTrack = obj as DocumentLongTrack;
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
-            documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            documentAsLongTrack.UpdatedUser = "appuser";
         }
         await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
     }
@@ -62,7 +62,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
             var documentAsLongTrack = obj as DocumentLongTrack;
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
             // Todo : Updated User field will be update soon
-            documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            documentAsLongTrack.UpdatedUser = "appuser";
             documentAsLongTrack.IsDeleted = true;
             await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
         }
@@ -75,7 +75,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
         if (typeof(TDocument).IsAssignableTo(typeof(DocumentLongTrack)) && obj is DocumentLongTrack documentAsLongTrack)
         {
             documentAsLongTrack.UpdatedDate = DateTime.UtcNow;
-            documentAsLongTrack.UpdatedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+            documentAsLongTrack.UpdatedUser = "appuser";
             documentAsLongTrack.IsDeleted = true;
             await DbSet.ReplaceOneAsync(Builders<TDocument>.Filter.Eq("_id", obj.Id), obj);
         }

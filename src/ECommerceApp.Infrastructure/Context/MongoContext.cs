@@ -45,7 +45,6 @@ public class MongoContext : IMongoContext
             return;
         }
 
-        // Configure mongo (You can inject the config, just to simplify)
         MongoClient = new MongoClient(_configuration["MongoConnectionString:Connection"]);
 
         Database = MongoClient.GetDatabase(_configuration["MongoConnectionString:DatabaseName"]);
