@@ -104,7 +104,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.AZURE_VM_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy Docker Images
-        uses: appleboy/ssh-action@v0.4.2
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}  
