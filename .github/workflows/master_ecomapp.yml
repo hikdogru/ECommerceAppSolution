@@ -106,7 +106,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |          
-          ssh ${{ secrets.AZURE_VM_USERNAME }}@20.224.160.99 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+          ssh azureuser@20.224.160.99 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
 
          
 
