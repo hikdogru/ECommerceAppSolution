@@ -106,6 +106,8 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.AZURE_VM_HOST }} ssh-rsa ${{ secrets.AZURE_VM_HOST }}" >> $HOME/.ssh/known_hosts
           ssh ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
 
          
