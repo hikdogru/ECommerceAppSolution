@@ -102,8 +102,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.GHA_DEPLOY_SSH_PRIVATE_KEY }}
       
-      - name: Disable Host key verification
-        # Hack to prevent "Host key verification failed". Should be replaced with a ssh-keyscan based solution
+      - name: Disable Host key verification       
         run: echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
       - name: Deploy
