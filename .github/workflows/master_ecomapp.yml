@@ -101,7 +101,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/ssh_key
           chmod 600 /tmp/ssh_key
-          ssh -i /tmp/ssh_key ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}
+          ssh -t -i /tmp/ssh_key ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       
@@ -114,7 +114,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |          
-          ssh -i /tmp/ssh_key ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+          ssh -t -i /tmp/ssh_key ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
 
          
 
