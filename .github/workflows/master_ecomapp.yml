@@ -97,6 +97,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Set SSH Key Permissions
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /tmp/ssh_key
+          chmod 600 /tmp/ssh_key
+
       - name: Create SSH Known Hosts File
         run: |
           mkdir -p $HOME/.ssh
@@ -107,7 +112,7 @@ jobs:
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}  
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy with Docker Compose
         run: |          
