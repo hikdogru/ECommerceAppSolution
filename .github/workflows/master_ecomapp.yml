@@ -105,6 +105,7 @@ jobs:
       - name: Disable Host key verification       
         run: echo "StrictHostKeyChecking no" >> ~/.ssh/config
 
+
       - name: Deploy
         run: docker-compose up -d
         env:
