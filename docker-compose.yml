@@ -3,7 +3,7 @@ version: '3.8'
 services:
   ecommerceapp.webui:
     container_name: webui_container
-    image: ${DOCKER_REGISTRY-}ecommerceappwebui
+    image: hikdogru/ecommerceappwebui:latest
     build:
       context: .
       dockerfile: src/ECommerceApp.WebUI/Dockerfile
