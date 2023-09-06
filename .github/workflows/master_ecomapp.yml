@@ -96,6 +96,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Create SSH Known Hosts File
+        run: |
+          mkdir -p $HOME/.ssh
+          ssh-keyscan -H -p 22 ${{ secrets.AZURE_VM_HOST }} >> $HOME/.ssh/known_hosts
       
       - name: Deploy Docker Images
         uses: appleboy/ssh-action@master
@@ -106,7 +111,7 @@ jobs:
 
       - name: Deploy with Docker Compose
         run: |          
-          ssh azureuser@20.224.160.99 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+          ssh ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
 
          
 
