@@ -96,24 +96,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Set up SSH key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.AZURE_VM_HOST }} >> ~/.ssh/known_hosts
-
+      
       - name: Deploy Docker Images
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}  
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: ./docker-compose.yml  
-          target: /ecommerceapp/docker-compose.yml  
-          script: |            
-            docker compose pull
-            docker-compose up -d
+
+      - name: Deploy with Docker Compose
+        run: |
+          ssh ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+
+         
 
 
 
