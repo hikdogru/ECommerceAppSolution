@@ -9,11 +9,12 @@ services:
       dockerfile: src/ECommerceApp.WebUI/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=https://+:443;http://+:80
       - MongoConnectionString__Connection=mongodb://mongo:27017
       - MongoConnectionString__DatabaseName=ecommerceapp      
     ports:
-      - "80:80"
+      - 80
+      - 443
     volumes:
       - usersecrets:/root/.microsoft/usersecrets:ro
       - aspnethttps:/root/.aspnet/https:ro
