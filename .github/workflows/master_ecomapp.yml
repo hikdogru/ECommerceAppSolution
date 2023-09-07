@@ -96,12 +96,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-             
-      - name: Copy docker-compose.yml to Virtual Machine
-        run: |
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ./docker-compose.yml ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}:ecommerceapp
-
-      
+                   
       - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
@@ -109,7 +104,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          script: cd ecommerceapp && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
+          script: cd ecommerceapp/ECommerceAppSolution && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
       
          
              
