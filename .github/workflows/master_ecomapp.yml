@@ -96,31 +96,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      
-      - name: Add Host Key to Known Hosts
-        run: |
-             mkdir -p $HOME/.ssh
-             ssh-keyscan -H -p 22 ${{ secrets.AZURE_VM_HOST }} >> $HOME/.ssh/known_hosts
-
-      - name: SSH into remote server
-        run: |
-            ssh -i $HOME/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}
-        env:
-            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-
-     
+             
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
+        uses: appleboy/ssh-action@master
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          host: ${{ secrets.AZURE_VM_HOST }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          script: cd ecommerceapp && docker-compose pull && docker-compose up -d
       
-
-      - name: Deploy with Docker Compose
-        run: |          
-             ssh ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+         
+             
 
   
         
