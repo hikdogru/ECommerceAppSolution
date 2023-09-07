@@ -104,7 +104,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          script: cd ecommerceapp/ECommerceAppSolution && docker network create --attachable backend && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
+          script: cd ecommerceapp/ECommerceAppSolution && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
       
          
              
