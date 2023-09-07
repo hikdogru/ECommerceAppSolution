@@ -97,6 +97,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
              
+      - name: Copy docker-compose.yml to Virtual Machine
+        run: |
+          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} -f docker-compose.yml ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}:/ecommerce
+
+      
       - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
