@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:8008"
     },
     //"https": {
     //  "commandName": "Project",
@@ -28,9 +28,9 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:8000",
+      "launchUrl": "http://localhost:8008",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://+:8000"
+        "ASPNETCORE_URLS": "http://+:8008"
       },
       "publishAllPorts": true,
       "useSSL": false
