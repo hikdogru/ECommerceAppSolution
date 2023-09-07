@@ -104,12 +104,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.GHA_DEPLOY_SSH_PRIVATE_KEY }}
 
-      - name: Deploy Docker Images
-        uses: appleboy/ssh-action@master
-        with:
-         host: ${{ secrets.AZURE_VM_HOST }}
-         username: ${{ secrets.AZURE_VM_USERNAME }}  
-         key: ${{ secrets.GHA_DEPLOY_SSH_PRIVATE_KEY }}
+      
 
       - name: Deploy with Docker Compose
         run: |          
