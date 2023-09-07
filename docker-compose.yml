@@ -13,7 +13,7 @@ services:
       - MongoConnectionString__Connection=mongodb://mongo:27017
       - MongoConnectionString__DatabaseName=ecommerceapp      
     ports:
-      - "443:443"
+      - "80:80"
     volumes:
       - usersecrets:/root/.microsoft/usersecrets:ro
       - aspnethttps:/root/.aspnet/https:ro
