@@ -17,6 +17,8 @@ services:
     volumes:
       - usersecrets:/root/.microsoft/usersecrets:ro
       - aspnethttps:/root/.aspnet/https:ro
+      - images:/app/wwwroot/assets/images
+
     depends_on:
      - mongo
     networks:
@@ -41,3 +43,4 @@ volumes:
   usersecrets:
   aspnethttps:
   mongodata:
+  images:
