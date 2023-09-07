@@ -96,11 +96,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.GHA_DEPLOY_SSH_PRIVATE_KEY }}
+
+      - name: Deploy Docker Images
+        uses: appleboy/ssh-action@master
+        with:
+         host: ${{ secrets.AZURE_VM_HOST }}
+         username: ${{ secrets.AZURE_VM_USERNAME }}  
+         key: ${{ secrets.GHA_DEPLOY_SSH_PRIVATE_KEY }}
+
+      - name: Deploy with Docker Compose
+        run: |          
+             ssh ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }} 'cd ecommerceapp && docker-compose pull && docker-compose up -d'
+
+  
+        
             
     
 
