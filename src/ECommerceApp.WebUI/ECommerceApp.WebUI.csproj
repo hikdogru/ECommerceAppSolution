@@ -41,4 +41,44 @@
 	</ItemGroup>
 
 
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\Components\UIBanner\Default.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Views\Shared\Components\BestDeals\Default.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Shared\Components\FeaturedProducts\Default.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Shared\Components\ShopCategory\Default.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Shared\Components\UIBanner\Default.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Shared\_FeaturesPartialView.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\_FeaturesPartialView.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\Components\BestDeals\Default.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\Components\ShopCategory\Default.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\Components\FeaturedProducts\Default.cshtml" />
+	</ItemGroup>
+
+
 </Project>

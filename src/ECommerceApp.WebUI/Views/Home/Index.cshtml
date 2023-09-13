@@ -1,3 +1,10 @@
-﻿<div style="height: 500px;">
-    Index page
-</div>
+﻿
+<vc:ui-banner />
+
+@await Html.PartialAsync("_FeaturesPartialView")
+
+<vc:best-deals />
+
+<vc:shop-category />
+
+<vc:featured-products />

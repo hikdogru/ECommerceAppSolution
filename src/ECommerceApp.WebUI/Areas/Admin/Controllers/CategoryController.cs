@@ -21,10 +21,16 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
+        #region Fields
+
         private readonly ICategoryService _categoryService;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
         private readonly IToastNotification _toastNotification;
+
+        #endregion
+
+        #region Ctor
 
         public CategoryController(ICategoryService categoryService,
             IWebHostEnvironment env,
@@ -37,7 +43,9 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             _toastNotification = toastNotification;
         }
 
+        #endregion
 
+        #region Methods
 
         public IActionResult Index()
         {
@@ -237,7 +245,8 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         }
 
 
-    }
+        #endregion
 
+    }
 
 }
