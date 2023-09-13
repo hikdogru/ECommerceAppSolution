@@ -89,22 +89,18 @@ jobs:
 
      - name: Clean up
        run: docker-compose -f docker-compose.yml down
-   
-
-  docker_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
                    
-      - name: Set up SSH
-        uses: appleboy/ssh-action@master
-        with:
+     - name: Set up SSH
+       uses: appleboy/ssh-action@master
+       with:
           host: ${{ secrets.AZURE_VM_HOST }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           script: cd ecommerceapp/ECommerceAppSolution && git pull && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
+   
+
+      
       
          
              
