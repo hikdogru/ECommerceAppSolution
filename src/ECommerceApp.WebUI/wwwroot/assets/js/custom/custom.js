@@ -57,7 +57,7 @@
     /*--------------------------------------------------------------
     4.PRODUCT SLIDER 01 JS INIT
     --------------------------------------------------------------*/
-    $(".slick-slider").slick();
+    /* $(".slick-slider").slick();*/
 
     var product_slider_01 = $('.product-slider-01');
     if (product_slider_01.is_exist()) {

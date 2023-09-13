@@ -26,6 +26,8 @@
 		<Folder Include="Areas\Admin\Data\" />
 		<Folder Include="Helpers\" />
 		<Folder Include="Validators\Product\" />
+		<Folder Include="Views\Shared\Components\BestSellers\" />
+		<Folder Include="Views\Shared\Components\SingleProduct\" />
 		<Folder Include="wwwroot\assets\images\" />
 	</ItemGroup>
 
