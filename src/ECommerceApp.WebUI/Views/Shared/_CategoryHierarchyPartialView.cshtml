@@ -1,0 +1,21 @@
+﻿@model ECommerceApp.Application.Models.CategoryHierarchicalModel
+
+<li>
+
+    <a class="dropdown-item" href="#">@Model.Category.CategoryLanguages.FirstOrDefault()?.Name</a>
+
+
+    @if (Model.SubCategories.Count > 0)
+    {
+        <ul class="dropdown-menu dropdown-submenu">
+            @foreach (var subCategory in Model.SubCategories)
+            {
+
+                <partial name="_CategoryHierarchyPartialView" model="subCategory" />
+
+            }
+        </ul>
+    }
+
+
+</li>

@@ -55,6 +55,7 @@
 	  <_ContentIncludedByDefault Remove="Views\Shared\Components\FeaturedProducts\Default.cshtml" />
 	  <_ContentIncludedByDefault Remove="Views\Shared\Components\ShopCategory\Default.cshtml" />
 	  <_ContentIncludedByDefault Remove="Views\Shared\Components\UIBanner\Default.cshtml" />
+	  <_ContentIncludedByDefault Remove="Views\Shared\_CategoryHierarchyPartialView.cshtml" />
 	  <_ContentIncludedByDefault Remove="Views\Shared\_FeaturesPartialView.cshtml" />
 	</ItemGroup>
 
@@ -80,6 +81,12 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Views\Shared\Components\FeaturedProducts\Default.cshtml" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\_CategoryHierarchyPartialView.cshtml" />
 	</ItemGroup>
 
 

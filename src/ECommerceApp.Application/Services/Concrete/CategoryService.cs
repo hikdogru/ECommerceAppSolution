@@ -105,5 +105,29 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
             }
         }
     }
+
+    public List<CategoryHierarchicalModel> GetHierarchicals(ObjectId? parent = null)
+    {
+        var allCategories = GetAll().Where(x => !x.IsDeleted).ToList();
+        var hierarchies = new List<CategoryHierarchicalModel>();
+        Action<CategoryHierarchicalModel> getSubs = null;
+        getSubs = (h) =>
+        {
+            var subcats = allCategories.Where(m => m.ParentId == h.Category.Id.ToString()).ToList();
+            for (var i = 0; i < subcats.Count; i++)
+            {
+                var subcat = new CategoryHierarchicalModel(subcats[i]);
+                h.SubCategories.Add(subcat);
+                getSubs(subcat);
+            }
+        };
+        foreach (var c in allCategories.Where(m => (parent == null && (m.ParentId == parent.ToString() || string.IsNullOrEmpty(m.ParentId))) || m.ParentId == parent.ToString()).ToList())
+        {
+            var hierarchy = new CategoryHierarchicalModel(c);
+            getSubs(hierarchy);
+            hierarchies.Add(hierarchy);
+        }
+        return hierarchies;
+    }
 }
 

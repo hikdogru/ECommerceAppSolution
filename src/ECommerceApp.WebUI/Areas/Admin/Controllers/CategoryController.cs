@@ -58,7 +58,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             try
             {
                 var pagedCategories = await _categoryService.Filter(page, pageSize, filter);
-                var listOfCategories = pagedCategories.Select((x) => x);
+                var listOfCategories = pagedCategories.Select(x => x);
                 var mappedCategories = _mapper.Map<IEnumerable<CategoryViewModel>>(listOfCategories).ToList();
                 var categoryHierarchies = _categoryService.GetCategoryTree().Where(c => mappedCategories.Any(mc => mc.Id == c.Id));
                 mappedCategories.ForEach(c => c.Hierarchy = categoryHierarchies.FirstOrDefault(ch => ch.Id == c.Id)?.Text);

@@ -13357,6 +13357,18 @@ li.hasDD.hasDDtwo:hover .sub-two {
     z-index: 99;
 }
 
+.category-card {
+    height: 250px;
+    overflow: hidden;
+}
+
+.fixed-size-image {
+    width: 200px;
+    height: 190px;
+    object-fit: fill;
+}
+
+
 /*********** CSS TABLE OF CONTENTS *******************
 
 |--- 01.Component -> { Header }

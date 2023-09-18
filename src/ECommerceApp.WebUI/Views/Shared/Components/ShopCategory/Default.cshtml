@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<CategoryViewModel>
+@{
     Layout = null;
 }
 <div class="shop-category-section-01">
@@ -8,76 +9,22 @@
         </div>
         <div class="shop-category-section-01__slider">
             <div class="product-slider-02">
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-9.png" alt="card" class="mw-100">
+
+                @foreach (var category in Model)
+                {
+                    <a href="#" class="single-item">
+                        <div class="card-product card-product--02 category-card">
+                            <div class="card-image">
+                                <img src="~/assets/images/@category.MediaPath" alt="card" class="mw-100 fixed-size-image">
+                            </div>
+                            <div class="card-body p-0">
+                                <h6 class="title">@category.Name</h6>
+                            </div>
                         </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">Computer & Laptop</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-10.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">SmartPhone</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-11.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">Headphones</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-12.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">Accessories</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-13.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">Camera & Photo</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-14.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">TV & Homes</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="#" class="single-item">
-                    <div class="card-product card-product--02 ">
-                        <div class="card-image ">
-                            <img src="~/assets/media/ui/product/product-12.png" alt="card" class="mw-100">
-                        </div>
-                        <div class="card-body p-0">
-                            <h6 class="title">Accessories</h6>
-                        </div>
-                    </div>
-                </a>
+                    </a>
+                }
+
+
             </div>
             <div class="product-slider-02__control-buttons">
                 <button class="button button--prev">

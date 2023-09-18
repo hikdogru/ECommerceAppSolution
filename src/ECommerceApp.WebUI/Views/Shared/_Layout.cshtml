@@ -15,6 +15,31 @@
     <link rel="stylesheet" href="~/assets/plugins/custom/slick/slick.css">
 
     <link rel="stylesheet" href="~/assets/css/main.css" />
+    
+    <style>
+       
+        .dropdown-menu li {
+            position: relative;
+        }
+
+        .dropdown-menu .dropdown-submenu {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: -7px;
+        }
+
+        .dropdown-menu .dropdown-submenu-left {
+            right: 100%;
+            left: auto;
+        }
+
+        .dropdown-menu>li:hover>.dropdown-submenu {
+            display: block;
+        }
+    </style>
+    
+
 </head>
 <body data-theme-mode-panel-active data-theme="light">
     <div class="site-wrapper overflow-hidden">

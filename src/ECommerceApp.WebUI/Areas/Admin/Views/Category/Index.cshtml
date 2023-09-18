@@ -95,10 +95,10 @@
 
 
 @section Scripts
-{
+    {
     <script>
         // kendo grid
-        $(document).ready(function() {
+        $(document).ready(function () {
             dataSource = new kendo.data.DataSource({
                 transport: {
                     read: {
@@ -106,7 +106,7 @@
                         dataType: "json",
                         type: "post"
                     },
-                    parameterMap: function(options, operation) {
+                    parameterMap: function (options, operation) {
                         if (operation === "read") {
                             options.filter = options.filter || [];
                             return {
@@ -130,183 +130,182 @@
                             isActive: { type: "boolean" }
                         }
                     },
-                data: "data",
-                total: "total"
-            }
-        });
-
-        $("#grid").kendoGrid({
-            dataSource: dataSource,
-            navigatable: true,
-            pageable: {
-                refresh: true,
-                pageSizes: true,
-                buttonCount: 5
-            },
-            filterable: {
-                operators: {
-                    string: {
-                        eq: "Eşit",
-                        neq: "Eşit Değil",
-                        startswith: "Başlayan",
-                        contains: "İçeren",
-                        doesnotcontain: "İçermeyen",
-                        endswith: "Biten"
-                    }
+                    data: "data",
+                    total: "total"
                 }
-            },
-            search: {
-                fields: [
-                    { name: "name", operator: "contains" }
-                ]
-            },
-            excel: {
-                fileName: "products.xlsx",
-                allPages: true,
-                columns: [
-                    { field: "name", width: 75 }
-                ]
-            },
-            toolbar:
-            [
-                { name: "search" },
-                {
-                    name: "create",
-                    text: "Add new item",
-                    template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>'
-                },
-                { name: "excel" }
-            ],
+            });
 
-            columns:
-            [
-                { field: "refId", title: "Id", width: 20, hidden: true },
-                {
-                    field: "name",
-                    title: "Kategori",
-                    width: 30,
-                    template: function(dataItem) {
-
-                        return `
-                                                            <div class="d-flex">
-                                                                <!--begin::Thumbnail-->
-                                                                <a href="edit-category.html" class="symbol symbol-40px">
-                                                                    <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
-                                                                </a>
-                                                                <!--end::Thumbnail-->
-
-                                                                <div class="ms-5">
-                                                                    <!--begin::Description-->
-                                                                    <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
-                                                                    <!--end::Description-->
-                                                                </div>
-                                                            </div>
-                                                            `;
-                    },
-                    // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
-                    filterable: false
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                navigatable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
                 },
-                {
-                    field: "hierarchy",
-                    title: "Hiyerarşi",
-                    width: 30,
-                    filterable: false
-                },
-                {
-                    field: "isActive",
-                    title: "Aktif mi",
-                    width: 20,
-                    template: function(dataItem) {
-                        if (dataItem.isActive == true) {
-                            return '<span class="k-icon k-i-check text-success"></span>';
-                        } else {
-                            return '<span class="k-icon k-i-close text-danger"></span>';
-                        }
-                    },
-                    filterable: {
-                        
-                        ui: function(element) {
-                            element.kendoDropDownList({
-                                dataSource: [
-                                    { text: "Aktif", value: true },
-                                    { text: "Pasif", value: false }
-                                ],
-                                optionLabel: "Seç...",
-                                dataTextField: "text",
-                                dataValueField: "value"
-                            });
+                filterable: {
+                    operators: {
+                        string: {
+                            eq: "Eşit",
+                            neq: "Eşit Değil",
+                            startswith: "Başlayan",
+                            contains: "İçeren",
+                            doesnotcontain: "İçermeyen",
+                            endswith: "Biten"
                         }
                     }
                 },
-                {
-                    command: [
-                        { name: "detail", text: "Detail", template: '<button class="btn btn-success btn-sm m-1" id="btnDetail"><span class="k-icon k-i-eye k-icon-18"></span></button>', width: 9 },
-                        { name: "delete", text: "Delete", template: '<button class="btn btn-danger btn-sm" id="btnDelete"><span class="k-icon k-i-trash k-icon-18"></span></button>', width: 9 }
+                search: {
+                    fields: [
+                        { name: "name", operator: "contains" }
+                    ]
+                },
+                excel: {
+                    fileName: "products.xlsx",
+                    allPages: true,
+                    columns: [
+                        { field: "name", width: 75 }
+                    ]
+                },
+                toolbar:
+                    [
+                        { name: "search" },
+                        {
+                            name: "create",
+                            text: "Add new item",
+                            template: '<button class="btn btn-primary btn-sm m-1 " id="btnCreate"><span class="k-icon k-i-plus k-icon-18"></span></button>'
+                        },
+                        { name: "excel" }
                     ],
-                    title: "&nbsp;",
-                    width: 18
-                }
-            ]
-        });
 
+                columns:
+                    [
+                        { field: "refId", title: "Id", width: 20, hidden: true },
+                        {
+                            field: "name",
+                            title: "Kategori",
+                            width: 30,
+                            template: function (dataItem) {
 
-        $("#grid th").css("text-align", "center");
-        $("#grid tbody").css("text-align", "center");
+                                return `
+                                                                    <div class="d-flex">
+                                                                        <!--begin::Thumbnail-->
+                                                                        <a href="/Admin/Category/Edit/${dataItem.refId}" class="symbol symbol-40px" target="_blank">
+                                                                            <span class="symbol-label" style="background-image:url(/assets/images/${dataItem.mediaPath});"></span>
+                                                                        </a>
+                                                                        <!--end::Thumbnail-->
 
-        $("#grid").on("click",
-            "#btnCreate",
-            function(e) {
-                e.preventDefault();
-                window.open("@Url.Action("Create", "Category", new {Area = "Admin"})", "_blank");
-            });
-
-
-        $("#grid").on("click",
-            "#btnDetail",
-            function(e) {
-                e.preventDefault();
-                var tr = $(this).closest("tr");
-                var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
-
-                // Todo: id değeri boş geliyor. Bakılacak.
-                window.open("@Url.Action("Edit", "Category", new {Area = "Admin"})/" + dataItem.refId, "_blank");
-            });
-
-
-        $("#grid").on("click",
-            "#btnDelete",
-            function(e) {
-                e.preventDefault();
-                var tr = $(this).closest("tr");
-                var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
-
-                if (confirm("Kayıt Silinsin Mi?")) {
-                    // Perform the delete operation
-                    $.ajax({
-                        url: "@Url.Action("Delete", "Category", new {Area = "Admin"})",
-                        type: "DELETE",
-                        data: { id: dataItem.refId },
-                        success: function(result) {
-
-                            var dataSource = $("#grid").data("kendoGrid").dataSource;
-                            // Refresh the grid
-                            dataSource.read();
+                                                                        <div class="ms-5">
+                                                                            <!--begin::Description-->
+                                                                            <div class="text-muted fs-7 fw-bold mt-3">${dataItem.name}</div>
+                                                                            <!--end::Description-->
+                                                                        </div>
+                                                                    </div>
+                                                                    `;
+                            },
+                            // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
+                            filterable: false
                         },
-                        error: function(xhr, status, error) {
-                            console.error(error);
+                        {
+                            field: "hierarchy",
+                            title: "Hiyerarşi",
+                            width: 30,
+                            filterable: false
                         },
-                    });
-                }
-
+                        {
+                            field: "isActive",
+                            title: "Aktif mi",
+                            width: 20,
+                            template: function (dataItem) {
+                                if (dataItem.isActive == true) {
+                                    return '<span class="k-icon k-i-check text-success"></span>';
+                                } else {
+                                    return '<span class="k-icon k-i-close text-danger"></span>';
+                                }
+                            },
+                            filterable: {
+                                ui: function (element) {
+                                    element.kendoDropDownList({
+                                        dataSource: [
+                                            { text: "Aktif", value: true },
+                                            { text: "Pasif", value: false }
+                                        ],
+                                        optionLabel: "Seç...",
+                                        dataTextField: "text",
+                                        dataValueField: "value"
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            command: [
+                                { name: "detail", text: "Detail", template: '<button class="btn btn-success btn-sm m-1" id="btnDetail"><span class="k-icon k-i-eye k-icon-18"></span></button>', width: 9 },
+                                { name: "delete", text: "Delete", template: '<button class="btn btn-danger btn-sm" id="btnDelete"><span class="k-icon k-i-trash k-icon-18"></span></button>', width: 9 }
+                            ],
+                            title: "&nbsp;",
+                            width: 18
+                        }
+                    ]
             });
 
-        // For to clear search input
-        let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
-        $(".k-grid-search").append(clearButton);
-        $(".k-link-clear").click(function() {
-            $(".k-grid-search input").val("").trigger("input");
+
+            $("#grid th").css("text-align", "center");
+            $("#grid tbody").css("text-align", "center");
+
+            $("#grid").on("click",
+                "#btnCreate",
+                function (e) {
+                    e.preventDefault();
+                    window.open("@Url.Action("Create", "Category", new {Area = "Admin"})", "_blank");
+                });
+
+
+            $("#grid").on("click",
+                "#btnDetail",
+                function (e) {
+                    e.preventDefault();
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    // Todo: id değeri boş geliyor. Bakılacak.
+                    window.open("@Url.Action("Edit", "Category", new {Area = "Admin"})/" + dataItem.refId, "_blank");
+                });
+
+
+            $("#grid").on("click",
+                "#btnDelete",
+                function (e) {
+                    e.preventDefault();
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    if (confirm("Kayıt Silinsin Mi?")) {
+                        // Perform the delete operation
+                        $.ajax({
+                            url: "@Url.Action("Delete", "Category", new {Area = "Admin"})",
+                            type: "DELETE",
+                            data: { id: dataItem.refId },
+                            success: function (result) {
+
+                                var dataSource = $("#grid").data("kendoGrid").dataSource;
+                                // Refresh the grid
+                                dataSource.read();
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            },
+                        });
+                    }
+
+                });
+
+            // For to clear search input
+            let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
+            $(".k-grid-search").append(clearButton);
+            $(".k-link-clear").click(function () {
+                $(".k-grid-search input").val("").trigger("input");
+            });
         });
-    });
 
     </script>
 }
