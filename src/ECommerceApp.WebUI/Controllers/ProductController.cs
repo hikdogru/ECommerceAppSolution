@@ -9,4 +9,19 @@ public class ProductController : Controller
     {
         return View();
     }
+
+    public IActionResult WishList()
+    {
+        return View();
+    }
+
+    public IActionResult Compare()
+    {
+        return View();
+    }
+
+    public IActionResult Details()
+    {
+        return View();
+    }
 }

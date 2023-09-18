@@ -1,4 +1,10 @@
-﻿<div class="footer-section-01">
+﻿@using ECommerceApp.Application.Services.Abstract
+@inject ICategoryService _categoryService
+@{
+    var categories = _categoryService.GetHierarchicals();
+}
+
+<div class="footer-section-01">
     <div class="container">
         <div class="row card-row">
             <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -18,18 +24,17 @@
                 <div class="footer-widget">
                     <h2 class="title">Top Category</h2>
                     <ul class="footer-list-group">
-                        <li><a href="#">Computer & Laptop</a></li>
-                        <li><a href="#">SmartPhone</a></li>
-                        <li><a href="#">Headphone</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li><a href="#">Camera & Photo</a></li>
-                        <li><a href="#">TV & Homes</a></li>
+                        @foreach (var category in categories)
+                        {
+                            <li><a href="#">@category.Category.CategoryLanguages.FirstOrDefault()?.Name</a></li>
+                        }
+
                         <li class="text-btn">
-                            <a href="#">
+                            <a asp-controller="Product" asp-action="Index" target="_blank">
                                 Browse All Product
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.125 10H16.875" stroke="#EBC80C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M11.25 4.375L16.875 10L11.25 15.625" stroke="#EBC80C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M3.125 10H16.875" stroke="#EBC80C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M11.25 4.375L16.875 10L11.25 15.625" stroke="#EBC80C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
                         </li>
@@ -40,11 +45,11 @@
                 <div class="footer-widget">
                     <h2 class="title">Quick links</h2>
                     <ul class="footer-list-group">
-                        <li><a href="#">Shop Product</a></li>
-                        <li><a href="#">Shoping Cart</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">Compare</a></li>
-                        <li><a href="#">Track Order</a></li>
+                        <li><a asp-controller="Product" asp-action="Index" target="_blank">Shop Product</a></li>
+                        <li><a asp-controller="ShoppingCart" asp-action="Index" target="_blank">Shoping Cart</a></li>
+                        <li><a asp-controller="Product" asp-action="WishList" target="_blank">Wishlist</a></li>
+                        <li><a asp-controller="Product" asp-action="Compare" target="_blank">Compare</a></li>
+                        <li><a asp-controller="Order" asp-action="TrackOrder" target="_blank">Track Order</a></li>
                         <li><a href="#">Customer Help</a></li>
                         <li><a href="#">About Us</a></li>
                     </ul>
