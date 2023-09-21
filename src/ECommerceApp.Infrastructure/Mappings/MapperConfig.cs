@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ECommerceApp.Infrastructure.Mappings.Localization;
 using ECommerceApp.Infrastructure.Mappings.Product;
 using MongoDB.Driver.Linq;
 
@@ -13,6 +14,7 @@ public static class MapperConfig
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<CategoryMapping>();
+            cfg.AddProfile<LanguageMapping>();
         });
         var mapper = config.CreateMapper();
         return mapper;

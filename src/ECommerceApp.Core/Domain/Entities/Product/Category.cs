@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace ECommerceApp.Core.Domain.Entities;
+namespace ECommerceApp.Core.Domain.Entities.Product;
 
 [BsonIgnoreExtraElements]
 public class Category : DocumentLongTrack

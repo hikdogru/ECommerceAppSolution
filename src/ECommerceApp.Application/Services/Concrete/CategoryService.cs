@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using ECommerceApp.Application.Models;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
-using ECommerceApp.Core.Domain.Entities;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
 using ECommerceApp.Core.DTOs;
 using ECommerceApp.Core.Extensions;
@@ -15,6 +14,7 @@ using MongoDB.Driver.Linq;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using Newtonsoft.Json.Linq;
+using ECommerceApp.Core.Domain.Entities.Product;
 
 namespace ECommerceApp.Application.Services.Concrete;
 
@@ -27,30 +27,23 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
 
     public async Task<PaginatedList<CategoryDTO>> Filter(int page, int pageSize, GridFilters? filter = null)
     {
-        var allData = GetAll();
+        var allData = GetAll().Where(x => !x.IsDeleted);
 
         if (filter != null && filter.Filters != null && filter.Filters.Any() && !string.IsNullOrEmpty(filter.Logic))
         {
             foreach (var field in filter.Filters)
             {
-
                 if (field.Field == "name")
-                {
-                    // Todo: Refactor this - Remove AsEnumerable and AsQueryable
-                    allData = allData.AsEnumerable()
-                        .Where(x => x.CategoryLanguages.Any(cl => cl.Name.ContainsCaseInsensitive(field.Value)))
-                        .AsQueryable();
-                }
+                    allData = allData.Where(x => x.CategoryLanguages.Any(cl => Regex.IsMatch(cl.Name, field.Value, RegexOptions.IgnoreCase)));
 
                 else if (field.Field == "isActive")
                     allData = allData.Where(x => x.IsActive == bool.Parse(field.Value));
             }
         }
 
-        var categoriesAsJson = allData.Where(x => !x.IsDeleted)
-                                       .ToJson();
-        var deserializedCategories = BsonSerializer.Deserialize<List<CategoryDTO>>(categoriesAsJson);
-        var pagedData = await deserializedCategories.AsQueryable().ToPagedListAsync(page, pageSize, typeof(IMongoQueryable));
+        var pagedData = await allData.ProjectTo<CategoryDTO>(MapperConfig.GetMapper().ConfigurationProvider)
+            .ToPagedListAsync(page, pageSize, typeof(IMongoQueryable));
+
         return pagedData;
     }
 

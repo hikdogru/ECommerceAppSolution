@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 
-namespace ECommerceApp.Core.Domain.Entities;
+namespace ECommerceApp.Core.Domain.Entities.Product;
 
 public class CategoryMedia
 {

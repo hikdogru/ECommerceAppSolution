@@ -1,4 +1,4 @@
-﻿using ECommerceApp.Core.Domain.Entities;
+﻿using ECommerceApp.Core.Domain.Entities.Product;
 
 namespace ECommerceApp.Application.Models;
 

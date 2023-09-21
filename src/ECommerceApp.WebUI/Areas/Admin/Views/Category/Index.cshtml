@@ -1,29 +1,4 @@
-﻿@section TopLevelCss
-    {
-    <style>
-        .k-toolbar {
-            display: block !important;
-        }
-
-            .k-toolbar .k-searchbox {
-                float: left !important;
-                width: 15rem !important;
-            }
-
-            .k-toolbar button {
-                float: right !important;
-            }
-
-        .k-link-clear {
-            margin-right: .428em;
-        }
-
-    </style>
-    <link href="https://kendo.cdn.telerik.com/2023.1.117/styles/kendo.default-ocean-blue.min.css" rel="stylesheet" type="text/css">
-}
-
-
-
+﻿
 <div id="kt_app_toolbar" class="app-toolbar  py-1 py-lg-6 ">
 
     <!--begin::Toolbar container-->
@@ -42,7 +17,7 @@
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                 <!--begin::Item-->
                 <li class="breadcrumb-item text-muted">
-                    <a href="/" class="text-muted text-hover-primary">
+                    <a href="/admin" class="text-muted text-hover-primary">
                         Home
                     </a>
                 </li>
@@ -86,12 +61,7 @@
     </div>
 </div>
 
-@section TopLevelJS
-    {
-    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/kendo.all.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2022.2.802/js/messages/kendo.messages.tr-TR.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.4.0/jszip.min.js"></script>
-}
+
 
 
 @section Scripts
@@ -203,7 +173,7 @@
                                                                     </div>
                                                                     `;
                             },
-                            // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expresiison builder)
+                            // Todo: İleride bu true olacak. Filtreleme alanı predicate kullanılarak geliştirilecek. (Expression builder)
                             filterable: false
                         },
                         {

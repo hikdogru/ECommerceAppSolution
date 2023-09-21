@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using AutoMapper;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
-using ECommerceApp.Core.Domain.Entities;
+using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.DTOs;
 using ECommerceApp.Core.Extensions;
 using ECommerceApp.Core.Helpers;
@@ -52,6 +52,12 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Retrieves a paged collection of categories with filters applied.
+        /// </summary>
+        /// <param name="page">The index of the requested page.</param>
+        /// <param name="pageSize">The maximum number of items per page. Defaults to 10.</param>
+        /// <param name="filter">The optional filter to apply to each category.</param>
         [HttpPost]
         public async Task<IActionResult> GetAll(int page, int pageSize = 10, GridFilters? filter = null)
         {

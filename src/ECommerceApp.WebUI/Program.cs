@@ -1,6 +1,7 @@
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Application.Services.Concrete;
-using ECommerceApp.Core.Domain.Entities;
+using ECommerceApp.Core.Domain.Entities.Language;
+using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
 using ECommerceApp.Infrastructure.Context;
@@ -27,7 +28,9 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
 builder.Services.AddSingleton<IMongoContext, MongoContext>();
 builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Category>>();
+builder.Services.AddScoped<IRepository<Language, ObjectId>, BaseRepository<Language>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 
 var app = builder.Build();
