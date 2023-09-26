@@ -25,6 +25,14 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
 
     }
 
+
+    /// <summary>
+    /// Filters categories based on the provided page, pageSize and filter values.
+    /// </summary>
+    /// <param name="page">Page number</param>
+    /// <param name="pageSize">Number of items per page</param>
+    /// <param name="filter">Filter to apply</param>
+    /// <returns>Paginated list of the CategoryDTO type</returns>
     public async Task<PaginatedList<CategoryDTO>> Filter(int page, int pageSize, GridFilters? filter = null)
     {
         var allData = GetAll().Where(x => !x.IsDeleted);
@@ -56,7 +64,7 @@ public class CategoryService : CRUDService<IRepository<Category, ObjectId>, Cate
     }
 
 
-    public List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "English", string seperator = " > ")
+    public List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "en", string seperator = " > ")
     {
         var allCategories = GetAll().Where(x => !x.IsDeleted).ToList();
         Func<Category, List<Category>, string>? parents = null;

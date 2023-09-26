@@ -24,6 +24,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         #region Fields
 
         private readonly ICategoryService _categoryService;
+        private readonly ILanguageService _languageService;
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
         private readonly IToastNotification _toastNotification;
@@ -35,12 +36,14 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         public CategoryController(ICategoryService categoryService,
             IWebHostEnvironment env,
             IMapper mapper,
-            IToastNotification toastNotification)
+            IToastNotification toastNotification,
+            ILanguageService languageService)
         {
             _categoryService = categoryService;
             _env = env;
             _mapper = mapper;
             _toastNotification = toastNotification;
+            _languageService = languageService;
         }
 
         #endregion
@@ -89,37 +92,24 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
                                                 Value = c.Id.ToString()
                                             });
 
+            var languages = _languageService.GetAll().Where(l => !l.IsDeleted);
+            var categoryModel = new CategoryModel()
+            {
+                CategoryLanguages = languages.Select(l => new CategoryLanguageModel()
+                {
+                    LanguageCode = l.Code,
+                    LanguageId = l.Id.ToString()
+                }).ToList(),
+                CategoryMedias = languages.Select(l => new CategoryMediaModel()
+                {
+                    LanguageCode = l.Code,
+                    LanguageId = l.Id.ToString()
+                }).ToList()
+            };
+
             ViewBag.Categories = categories;
 
-            return View(new CategoryModel()
-            {
-                CategoryLanguages = new List<CategoryLanguageModel>()
-                {
-                    new ()
-                    {
-                        LanguageCode = "English",
-                        LanguageId = "1"
-                    },
-                    new ()
-                    {
-                        LanguageCode = "Turkish",
-                        LanguageId = "2"
-                    }
-                },
-                CategoryMedias = new List<CategoryMediaModel>()
-                {
-                    new ()
-                    {
-                        LanguageId = "1",
-                        LanguageCode = "English"
-                    },
-                    new ()
-                    {
-                        LanguageId = "2",
-                        LanguageCode = "Turkish"
-                    }
-                }
-            });
+            return View(categoryModel);
         }
 
         [HttpPost]
@@ -171,38 +161,28 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 
             ViewBag.Categories = categories;
 
-            // Todo: Refactor this code
-            var languages = new CategoryModel()
+            var languages = _languageService.GetAll().Where(l => !l.IsDeleted);
+            var categoryModel = new CategoryModel()
             {
-                CategoryLanguages = new List<CategoryLanguageModel>()
+                CategoryLanguages = languages.Select(l => new CategoryLanguageModel()
                 {
-                    new()
-                    {
-                        LanguageCode = "English",
-                        LanguageId = "1"
-                    },
-                    new()
-                    {
-                        LanguageCode = "Turkish",
-                        LanguageId = "2"
-                    }
-                },
-                CategoryMedias = new List<CategoryMediaModel>()
+                    LanguageCode = l.Code,
+                    LanguageId = l.Id.ToString()
+                }).ToList(),
+                CategoryMedias = languages.Select(l => new CategoryMediaModel()
                 {
-                    new()
-                    {
-                        LanguageId = "1",
-                        LanguageCode = "English"
-                    },
-                    new()
-                    {
-                        LanguageId = "2",
-                        LanguageCode = "Turkish"
-                    }
-                }
+                    LanguageCode = l.Code,
+                    LanguageId = l.Id.ToString()
+                }).ToList()
             };
-            var languageIsNotExist = languages.CategoryLanguages.Where(l => !mappedCategory.CategoryLanguages.Any(cl => cl.LanguageId == l.LanguageId)).ToList();
-            var mediaIsNotExist = languages.CategoryMedias.Where(l => !mappedCategory.CategoryMedias.Any(cl => cl.LanguageId == l.LanguageId)).ToList();
+            var languageIsNotExist = categoryModel.CategoryLanguages
+                .Where(l => !mappedCategory.CategoryLanguages
+                    .Any(cl => cl.LanguageId == l.LanguageId))
+                .ToList();
+            var mediaIsNotExist = categoryModel.CategoryMedias
+                .Where(l => !mappedCategory.CategoryMedias
+                    .Any(cl => cl.LanguageId == l.LanguageId))
+                .ToList();
             mappedCategory.CategoryLanguages.AddRange(languageIsNotExist);
             mappedCategory.CategoryMedias.AddRange(mediaIsNotExist);
 
@@ -214,6 +194,11 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var categoryInDB = await _categoryService.GetById(ObjectId.Parse(model.Id));
+                if (categoryInDB is null)
+                {
+                    return NotFound();
+                }
                 string wwwrootPath = _env.WebRootPath;
                 var categoryMedias = model.CategoryMedias.Where(m => m.File != null || !string.IsNullOrEmpty(m.Path)).ToList();
                 if (categoryMedias.Count > 0)
@@ -225,7 +210,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
                     }
                 }
 
-                var category = _mapper.Map<Category>(model);
+                var category = _mapper.Map(model, categoryInDB);
                 await _categoryService.Update(category);
                 _toastNotification.AddSuccessToastMessage("Category updated successfully!");
                 return RedirectToAction("Index");

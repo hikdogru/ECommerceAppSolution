@@ -21,7 +21,6 @@ public class LanguageController : Controller
 
     #endregion
 
-
     #region Ctor
 
     public LanguageController(
@@ -105,7 +104,12 @@ public class LanguageController : Controller
     {
         if (ModelState.IsValid)
         {
-            var language = _mapper.Map<Language>(model);
+            var languageInDB = await _languageService.GetById(ObjectId.Parse(model.Id));
+            if (languageInDB is null)
+            {
+                return NotFound();
+            }
+            var language = _mapper.Map(model, languageInDB);
             await _languageService.Update(language);
             _toastNotification.AddSuccessToastMessage("Language updated successfully");
             return Json(new { success = true });

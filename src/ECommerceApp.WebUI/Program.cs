@@ -29,8 +29,10 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 builder.Services.AddSingleton<IMongoContext, MongoContext>();
 builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Category>>();
 builder.Services.AddScoped<IRepository<Language, ObjectId>, BaseRepository<Language>>();
+builder.Services.AddScoped<IRepository<Dictionary, ObjectId>, BaseRepository<Dictionary>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
+builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 
 var app = builder.Build();
