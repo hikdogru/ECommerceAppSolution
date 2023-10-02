@@ -1,0 +1,449 @@
+@model ECommerceApp.WebUI.Areas.Admin.Models.Localization.DictionaryModel
+<div id="kt_app_toolbar" class="app-toolbar  py-1 py-lg-6 ">
+
+    <!--begin::Toolbar container-->
+    <div id="kt_app_toolbar_container" class="app-container  container-xxl d-flex flex-stack ">
+        <!--begin::Page title-->
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-1 ">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                Dictionaries
+            </h1>
+            <!--end::Title-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="/admin" class="text-muted text-hover-primary">
+                        Home
+                    </a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Localization
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Dictionary
+                </li>
+                <!--end::Item-->
+
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+
+    </div>
+    <!--end::Toolbar container-->
+</div>
+
+
+
+<div id="kt_app_content" class="app-content  flex-column-fluid " data-select2-id="select2-data-kt_app_content">
+
+
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container  container-xxl "
+        data-select2-id="select2-data-kt_app_content_container">
+        <div id="grid"></div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="dictionaryCreateModal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <form class="form" asp-action="Create" asp-controller="Dictionary" method="post"
+                    id="createdictionaryForm">
+                    <div class="mb-13 text-center">
+                        <h1 class="mb-3">Create dictionary</h1>
+
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">Language</label>
+                        <select class="form-select" asp-for="LanguageId" asp-items="ViewBag.Languages">
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2" asp-for="Key"></label>
+                        <input type="text" class="form-control form-control-solid" asp-for="Key" autocomplete="off" />
+                        <span asp-validation-for="Key" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2" asp-for="Value"></label>
+                        <input type="text" class="form-control form-control-solid" asp-for="Value" autocomplete="off" />
+                        <span asp-validation-for="Value" class="text-danger"></span>
+
+                    </div>
+
+
+
+
+                    <div class="text-center">
+                        <button type="submit" id="kt_modal_new_target_submit" class="btn btn-primary">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+
+<div class="modal fade" id="dictionaryEditModal" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content rounded">
+            <!--begin::Modal header-->
+            <div class="modal-header pb-0 border-0 justify-content-end">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--begin::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
+                <form class="form" asp-action="Edit" asp-controller="Dictionary" method="post" id="editDictionaryForm">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mb-13 text-center">
+                        <h1 class="mb-3">Edit dictionary</h1>
+
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">Language</label>
+                        <select class="form-select" asp-for="LanguageId" asp-items="ViewBag.Languages"
+                            id="editSelectLanguageId">
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2" asp-for="Key"></label>
+                        <input type="text" class="form-control form-control-solid" asp-for="Key" autocomplete="off" />
+                        <span asp-validation-for="Key" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex flex-column mb-8 fv-row">
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2" asp-for="Value"></label>
+                        <input type="text" class="form-control form-control-solid" asp-for="Value" autocomplete="off" />
+                        <span asp-validation-for="Value" class="text-danger"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" id="dictionaryEditButton" class="btn btn-primary">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+
+
+
+@section Scripts
+    {
+    <script>
+        // kendo grid
+        $(document).ready(function () {
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: '@Url.Action("GetAll", "Dictionary", new { area = "Admin" })',
+                        dataType: "json",
+                        type: "post"
+                    },
+                    parameterMap: function (options, operation) {
+                        if (operation === "read") {
+                            options.filter = options.filter || [];
+                            return {
+                                page: options.page,
+                                pageSize: options.pageSize,
+                                filter: options.filter
+                            };
+                        }
+                    }
+                },
+
+                pageSize: 10,
+                serverPaging: true,
+                serverSorting: true,
+                serverFiltering: true,
+                width: "100%",
+                scrollable: true,
+                schema: {
+                    model: {
+                        fields: {
+                            language: { type: "string" }
+                        }
+                    },
+                    data: "data",
+                    total: "total"
+                }
+            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                navigatable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                filterable: {
+                    operators: {
+                        string: {
+                            eq: "Eşit",
+                            neq: "Eşit Değil",
+                            startswith: "Başlayan",
+                            contains: "İçeren",
+                            doesnotcontain: "İçermeyen",
+                            endswith: "Biten"
+                        }
+                    }
+                },
+                search: {
+                    fields: [
+                        { name: "key", operator: "contains" },
+                        { name: "value", operator: "contains" }
+                    ]
+                },
+                toolbar:
+                    [
+                        { name: "search" },
+                        {
+                            name: "create",
+                            text: "Add new item",
+                            template: function (dataItem) {
+                                return '<button class="btn btn-primary btn-sm m-1" data-bs-toggle="modal" data-bs-target="#dictionaryCreateModal"><span class="k-icon k-i-plus k-icon-18"></button>';
+                            }
+                        }
+                    ],
+
+                columns:
+                    [
+                        { field: "id", title: "Id", width: 20, hidden: true },
+                        {
+                            field: "key",
+                            title: "Anahtar",
+                            width: 30,
+                            filterable: false
+                        },
+                        {
+                            field: "value",
+                            title: "Değer",
+                            width: 30,
+                            filterable: false
+                        },
+                        {
+                            field: "language",
+                            title: "Dil",
+                            width: 30,
+                            filterable: {
+                                multi: true
+                            }
+                        },
+                        {
+                            command: [
+                                { name: "detail", text: "Detail", template: '<button class="btn btn-success btn-sm m-1" id="btnDetail"><span class="k-icon k-i-eye k-icon-18"></span></button>', width: 9 },
+                                { name: "delete", text: "Delete", template: '<button class="btn btn-danger btn-sm" id="btnDelete"><span class="k-icon k-i-trash k-icon-18"></span></button>', width: 9 }
+                            ],
+                            title: "&nbsp;",
+                            width: 18
+                        }
+                    ],
+                    filterable: true
+            });
+
+            $("#grid th").css("text-align", "center");
+            $("#grid tbody").css("text-align", "center");
+
+
+            $("#grid").on("click",
+                "#btnDelete",
+                function (e) {
+                    e.preventDefault();
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    if (confirm("Kayıt Silinsin Mi?")) {
+                        // Perform the delete operation
+                        $.ajax({
+                            url: "@Url.Action("Delete", "Dictionary", new { Area = "Admin" })",
+                            type: "DELETE",
+                            data: { id: dataItem.id },
+                            success: function (response) {
+                                if (response.success) {
+                                    var dataSource = $("#grid").data("kendoGrid").dataSource;
+                                    // Refresh the grid
+                                    dataSource.read();
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(error);
+                            },
+                        });
+                    }
+                });
+
+            // For to clear search input
+            let clearButton = '<span class="k-link k-link-clear" aria-label="Clear the Search"><span unselectable="on" class="k-icon k-i-close"></span></span>';
+            $(".k-grid-search").append(clearButton);
+            $(".k-link-clear").click(function () {
+                $(".k-grid-search input").val("").trigger("input");
+            });
+
+
+            $('#createDictionaryForm').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Close dictionaryCreateModal modal
+                            $('#dictionaryCreateModal').modal('hide');
+                            // Clear form fields
+                            form[0].reset();
+                            // Refresh the kendo grid
+                            dataSource.read();
+                        } else {
+                            // Handle validation errors
+                            displayValidationErrors(response.errors);
+                        }
+                    },
+                    error: function () {
+                        // Handle the AJAX request error
+                        alert("An error occurred while submitting the form.");
+                    }
+                });
+            });
+
+
+            $("#grid").on("click",
+                "#btnDetail",
+                function (e) {
+                    e.preventDefault();
+                    // Make an AJAX request to fetch dictionary data
+                    var tr = $(this).closest("tr");
+                    var dataItem = $("#grid").data("kendoGrid").dataItem(tr);
+
+                    $.ajax({
+                        url: "@Url.Action("Edit", "Dictionary", new { Area = "Admin" })/" + dataItem.id, // Replace with the actual URL to fetch dictionary data
+                        type: "GET",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.success) {
+                                $("#editDictionaryForm input[name='Id']").val(response.data.id);
+                                $("#editDictionaryForm input[name='Key']").val(response.data.key);
+                                $("#editDictionaryForm input[name='Value']").val(response.data.value);
+
+                                var selectElement = document.getElementById("LanguageId");
+                                $("#editSelectLanguageId").val(response.data.languageId).change();
+                                // Open the modal
+                                $("#dictionaryEditModal").modal("show");
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                });
+
+            $('#editDictionaryForm').submit(function (e) {
+                e.preventDefault();
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        if (response.success) {
+                            // Close dictionaryCreateModal modal
+                            $('#dictionaryEditModal').modal('hide');
+                            // Clear form fields
+                            form[0].reset();
+                            // Refresh the kendo grid
+                            dataSource.read();
+                        } else {
+                            // Handle validation errors
+                            displayValidationErrors(response.errors);
+                        }
+                    },
+                    error: function () {
+                        // Handle the AJAX request error
+                        alert("An error occurred while submitting the form.");
+                    }
+                });
+            });
+            function displayValidationErrors(errors) {
+                // Clear previous validation error messages
+                $('.validation-error').empty();
+
+                // Display the new validation errors
+                $.each(errors, function (key, value) {
+                    var errorSpan = $('[data-valmsg-for="' + key + '"]');
+                    errorSpan.html(value);
+                });
+            }
+
+
+        });
+
+
+
+    </script>
+}

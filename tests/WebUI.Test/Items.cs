@@ -1,4 +1,4 @@
-﻿using ECommerceApp.Core.Domain.Entities;
+﻿using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.DTOs;
 using MongoDB.Bson;
 

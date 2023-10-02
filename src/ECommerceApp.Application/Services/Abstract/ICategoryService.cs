@@ -10,6 +10,6 @@ public interface ICategoryService : ICRUDService<Category, ObjectId>
 {
     Task<PaginatedList<CategoryDTO>> Filter(int page, int pageSize, GridFilters? filter = null);
     Task<CategoryDetailDTO> GetCategoryById(ObjectId id);
-    List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "English", string seperator = " > ");
+    List<CategoryTreeArrowModel> GetCategoryTree(string languageCode = "en", string seperator = " > ");
     List<CategoryHierarchicalModel> GetHierarchicals(ObjectId? parent = null);
 }

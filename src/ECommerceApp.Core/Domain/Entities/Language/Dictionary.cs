@@ -8,10 +8,6 @@ namespace ECommerceApp.Core.Domain.Entities.Language;
 /// </summary>
 public class Dictionary : DocumentLongTrack
 {
-    [BsonId]
-    [BsonRepresentation(BsonType.ObjectId)]
-    public string Id { get; set; }
-
     // Represents dictionary key e.g UI.Home
     [BsonElement("Key")]
     public string Key { get; set; }

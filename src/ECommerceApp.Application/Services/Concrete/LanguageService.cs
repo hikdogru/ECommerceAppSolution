@@ -40,4 +40,10 @@ public class LanguageService : CRUDService<IRepository<Language, ObjectId>, Lang
 
         return pagedData;
     }
+
+    public IQueryable<LanguageDTO> GetAllIfIsNotDeleted()
+    {
+        var languages = GetAll().Where(x => !x.IsDeleted);
+        return languages.ProjectTo<LanguageDTO>(MapperConfig.GetMapper().ConfigurationProvider);
+    }
 }

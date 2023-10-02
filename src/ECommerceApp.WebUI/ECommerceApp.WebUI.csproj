@@ -89,5 +89,9 @@
 	  <UpToDateCheckInput Remove="Views\Shared\_CategoryHierarchyPartialView.cshtml" />
 	</ItemGroup>
 
+<ItemGroup>
+        <!-- extends watching group to include *.cshtml and *.razor files -->
+        <Watch Include="**\*.cshtml;*.razor;*.js;*.css" Exclude="**\obj\**\*;bin\**\*" />
+</ItemGroup>
 
 </Project>

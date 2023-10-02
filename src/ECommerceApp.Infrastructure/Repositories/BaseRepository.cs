@@ -4,6 +4,7 @@ using ECommerceApp.Core.Domain.Interfaces.Repository;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections;
+using System.Linq.Expressions;
 
 
 namespace ECommerceApp.Infrastructure.Repositories;
@@ -17,7 +18,7 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
     {
         Context = context;
 
-        DbSet = Context.GetCollection<TDocument>(typeof(TDocument).Name);
+        DbSet = Context.GetCollection<TDocument>(typeof(TDocument).Name);        
     }
 
     public virtual async Task Add(TDocument obj)
@@ -39,9 +40,9 @@ public class BaseRepository<TDocument> : IRepository<TDocument, ObjectId> where 
     }
 
     public virtual IQueryable<TDocument> GetAll()
-    {
+    {        
         return DbSet.AsQueryable();
-    }
+    } 
 
     public virtual async Task Update(TDocument obj)
     {

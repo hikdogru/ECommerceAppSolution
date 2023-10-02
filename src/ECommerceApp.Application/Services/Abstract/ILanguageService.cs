@@ -8,4 +8,5 @@ namespace ECommerceApp.Application.Services.Abstract;
 public interface ILanguageService : ICRUDService<Language, ObjectId>
 {
     Task<PaginatedList<LanguageDTO>> Filter(int page, int pageSize, GridFilters? filter = null);
+    IQueryable<LanguageDTO> GetAllIfIsNotDeleted();
 }
