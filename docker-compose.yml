@@ -42,7 +42,5 @@ networks:
 volumes:
   usersecrets:
   aspnethttps:
-  mongodata:
-     external: true
-  images:
-     external: true
+  mongodata:     
+  images:     
