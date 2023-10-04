@@ -41,6 +41,11 @@ public class LanguageService : CRUDService<IRepository<Language, ObjectId>, Lang
         return pagedData;
     }
 
+    public IQueryable<LanguageDTO> GetAllIfActive()
+    {
+        return GetAllIfIsNotDeleted().Where(x => x.IsActive);
+    }
+
     public IQueryable<LanguageDTO> GetAllIfIsNotDeleted()
     {
         var languages = GetAll().Where(x => !x.IsDeleted);

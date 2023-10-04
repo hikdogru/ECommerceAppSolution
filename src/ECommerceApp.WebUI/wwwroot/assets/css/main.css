@@ -3835,26 +3835,18 @@ button:focus {
     .top-nav__wrapper--content .switcher__language .nice-select .list li {
         color: var(--bs-gray-600);
     }
-
-        .top-nav__wrapper--content .switcher__language .nice-select .list li:nth-child(1)::before {
-            content: url(../media/ui/logo/usa.png);
-            margin-right: 12px;
-        }
-
-        .top-nav__wrapper--content .switcher__language .nice-select .list li:nth-child(2)::before {
-            background-image: url(../media/ui/logo/tur.svg);
+        
+        .top-nav__wrapper--content .switcher__language .nice-select .list li::before {
+            background-image: var(--custom-before-background-image, none);
+            content: "";
+            margin-right: var(--custom-before-margin-right, 0);
             background-size: 22px 22px;
             display: inline-block;
             width: 22px;
             height: 22px;
-            content: "";
-            margin-right: 12px;
-        }
-
-        .top-nav__wrapper--content .switcher__language .nice-select .list li:nth-child(3)::before {
-            content: url(../media/ui/logo/rus.png);
-            margin-right: 12px;
-        }
+            
+          }
+          
 
         .top-nav__wrapper--content .switcher__language .nice-select .list li.selected {
             color: var(--bs-gray-900);
