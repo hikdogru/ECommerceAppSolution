@@ -79,6 +79,13 @@ jobs:
      - name: Create Docker network
        run:  docker network create backend
 
+     - name: Create Docker volume
+       run: | 
+          docker volume create mongodb_data
+          docker volume create usersecrets
+          docker volume create aspnethttps
+          docker volume create images
+
      - name: Set up Docker Compose
        run:  docker-compose -f docker-compose.yml up -d
 
