@@ -81,7 +81,7 @@ jobs:
 
      - name: Create Docker volume
        run: | 
-          docker volume create mongodb_data
+          docker volume create mongodata
           docker volume create usersecrets
           docker volume create aspnethttps
           docker volume create images
