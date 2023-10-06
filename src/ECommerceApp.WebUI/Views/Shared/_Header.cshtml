@@ -3,6 +3,7 @@
 @{
     Layout = null;
     var languages = _languageService.GetAllIfActive();
+    Context.Request.Cookies.TryGetValue("EcommerceApp_UserLanguage", out string? userPreferredLanguage);
 }
 
 <header
@@ -132,14 +133,21 @@
                     </ul>
                 </div>
                 <div class="switcher">
-                    <div class="switcher__language">
+                    <div class="switcher__language" id="languageDiv">
                         <select class="nice-select" name="languages" id="languages">
                             @if (languages.Count() > 0)
                             {
-                                foreach(var lang in languages)
+                                foreach (var lang in languages)
                                 {
-                                    <option value="@lang.Code"> @lang.Name </option>
-                                }                            
+                                    if (!string.IsNullOrEmpty(userPreferredLanguage) && lang.Code == userPreferredLanguage)
+                                    {
+                                        <option value="@lang.Code" data-id="@lang.Id" selected> @lang.Name </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@lang.Code" data-id="@lang.Id"> @lang.Name </option>
+                                    }
+                                }
                             }
                         </select>
                     </div>

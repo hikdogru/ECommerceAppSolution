@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -15,9 +16,8 @@
     <link rel="stylesheet" href="~/assets/plugins/custom/slick/slick.css">
 
     <link rel="stylesheet" href="~/assets/css/main.css" />
-    
+
     <style>
-       
         .dropdown-menu li {
             position: relative;
         }
@@ -38,9 +38,10 @@
             display: block;
         }
     </style>
-    
+
 
 </head>
+
 <body data-theme-mode-panel-active data-theme="light">
     <div class="site-wrapper overflow-hidden">
         @await Html.PartialAsync("_Header.cshtml")
@@ -48,13 +49,13 @@
         @RenderBody()
         @await Html.PartialAsync("_Footer.cshtml")
     </div>
-    
+
 
 
 
 
     <script src="~/assets/js/custom/vendor.min.js"></script>
-   
+
     <script>
         /**
          * Replace all SVG images with inline SVG
@@ -81,11 +82,35 @@
                     $img.replaceWith($svg);
                 }, 'xml');
             });
+
+
+
+            const listContainer = document.querySelector('.top-nav__wrapper--content .switcher__language .nice-select .list');
+            const liElements = listContainer.querySelectorAll('li');
+
+            liElements.forEach((li, index) => {
+                const langCode = li.getAttribute('data-value');
+                const imagePath = `/assets/media/flags/${langCode}.svg`; // Replace with your logic to get the image path
+                const margin = '12px';
+                li.style.setProperty('--custom-before-background-image', `url(${imagePath})`);
+                li.style.setProperty('--custom-before-margin-right', margin);
+            });
+
+
+            const selectElement = document.querySelector('#languageDiv select');
+            selectElement.onchange = function (e) {
+                console.log(e.target.value);
+                let languageCode = e.target.value;
+                window.open(`@Url.Action("ChangeUILanguage", "Home")?languageCode=${languageCode}`, "_self");
+            }
         });
+
+
+
     </script>
 
 
-<script src="~/assets/plugins/custom/nice-select/jquery.nice-select.min.js"></script>
+    <script src="~/assets/plugins/custom/nice-select/jquery.nice-select.min.js"></script>
     <script src="~/assets/plugins/custom/aos/aos.min.js"></script>
     <script src="~/assets/plugins/custom/counter-up/jquery.counterup.min.js"></script>
     <script src="~/assets/plugins/custom/counter-up/waypoints.min.js"></script>
@@ -98,4 +123,5 @@
     @RenderSection("Scripts", false)
 
 </body>
+
 </html>

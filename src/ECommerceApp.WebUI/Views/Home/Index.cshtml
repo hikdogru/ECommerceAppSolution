@@ -14,24 +14,3 @@
 
 
 
-
-
-@section Scripts
-    {
-    <script>
-
-const listContainer = document.querySelector('.top-nav__wrapper--content .switcher__language .nice-select .list');
-
-
-const liElements = listContainer.querySelectorAll('li');
-
-
-liElements.forEach((li, index) => {
-  const langCode = li.getAttribute('data-value');
-  const imagePath = `/assets/media/flags/${langCode}.svg`; // Replace with your logic to get the image path
-  const margin = '12px';
-  li.style.setProperty('--custom-before-background-image', `url(${imagePath})`);
-  li.style.setProperty('--custom-before-margin-right', margin);
-});
-    </script>
-}

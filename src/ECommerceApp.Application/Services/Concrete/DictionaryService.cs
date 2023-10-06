@@ -49,7 +49,7 @@ public class DictionaryService : CRUDService<IRepository<Dictionary, ObjectId>, 
                     }
                 }
             }
-            if(objectIdList.Count > 0)
+            if (objectIdList.Count > 0)
                 allData = allData.Where(x => objectIdList.Contains(x.Id));
 
         }
@@ -58,5 +58,17 @@ public class DictionaryService : CRUDService<IRepository<Dictionary, ObjectId>, 
             .ToPagedListAsync(page, pageSize, typeof(IMongoQueryable));
 
         return pagedData;
+    }
+
+    public string GetWord(string key, ObjectId? languageId)
+    {
+        languageId = languageId ?? _languageService.GetCurrentLanguageId();
+        if (languageId is not ObjectId)
+        {
+            throw new ArgumentNullException(nameof(languageId), "Language Id is null or empty!");
+        }
+
+        var dictionary = Repository.GetAll().FirstOrDefault(d => d.Key == key && d.LanguageId == languageId.ToString());
+        return dictionary?.Value ?? string.Empty;
     }
 }

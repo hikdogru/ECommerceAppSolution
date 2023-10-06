@@ -4,9 +4,13 @@ using ECommerceApp.Core.Domain.Entities.Language;
 using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
+using ECommerceApp.Core.Helpers;
+using ECommerceApp.Core.Services.Abstract;
+using ECommerceApp.Core.Services.Concrete;
 using ECommerceApp.Infrastructure.Context;
 using ECommerceApp.Infrastructure.Repositories;
 using ECommerceApp.WebUI.Mappings.Product;
+using ECommerceApp.WebUI.Middlewares;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MongoDB.Bson;
@@ -34,6 +38,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
+builder.Services.AddTransient<UserLanguageMiddleware>();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 
 var app = builder.Build();
 
@@ -56,6 +63,10 @@ app.UseAuthorization();
 
 app.UseNToastNotify();
 
+// My custom middlewares
+app.UseMiddleware<UserLanguageMiddleware>();
+
+
 
 app.MapAreaControllerRoute(
     areaName: "Admin",
@@ -66,13 +77,6 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
-
-
-
-
-
 
 
 
