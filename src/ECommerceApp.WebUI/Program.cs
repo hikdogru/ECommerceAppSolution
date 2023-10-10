@@ -15,8 +15,20 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MongoDB.Bson;
 using NToastNotify;
+using Serilog;
+using Serilog.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var mongoConnectionString = $"{builder.Configuration["MongoConnectionString:Connection"]}/{builder.Configuration["MongoConnectionString:DatabaseName"]}";
+var seqServer = $"http://localhost:5341";
+Logger log = new LoggerConfiguration()
+.WriteTo.MongoDB(mongoConnectionString, "Logs")
+.WriteTo.Seq(seqServer)
+.Enrich.FromLogContext()
+.MinimumLevel.Information()
+.CreateLogger();
+builder.Host.UseSerilog(log);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptions()
@@ -29,7 +41,6 @@ builder.Services.AddFluentValidationAutoValidation(config =>
     config.DisableDataAnnotationsValidation = true;
 });
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
-
 builder.Services.AddSingleton<IMongoContext, MongoContext>();
 builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Category>>();
 builder.Services.AddScoped<IRepository<Language, ObjectId>, BaseRepository<Language>>();
@@ -43,6 +54,9 @@ builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,8 +68,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSerilogRequestLogging();
+app.UseHttpsRedirection();
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 app.UseRouting();
 
@@ -69,6 +84,7 @@ app.UseMiddleware<UserLanguageMiddleware>();
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 #endregion
+
 
 app.MapAreaControllerRoute(
     areaName: "Admin",
