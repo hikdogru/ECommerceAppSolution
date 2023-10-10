@@ -99,7 +99,6 @@
 
             const selectElement = document.querySelector('#languageDiv select');
             selectElement.onchange = function (e) {
-                console.log(e.target.value);
                 let languageCode = e.target.value;
                 window.open(`@Url.Action("ChangeUILanguage", "Home")?languageCode=${languageCode}`, "_self");
             }

@@ -39,6 +39,7 @@ builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 builder.Services.AddTransient<UserLanguageMiddleware>();
+builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 
@@ -60,13 +61,14 @@ app.UseRouting();
 
 
 app.UseAuthorization();
-
 app.UseNToastNotify();
 
-// My custom middlewares
+#region Custom Middleware
+
 app.UseMiddleware<UserLanguageMiddleware>();
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
-
+#endregion
 
 app.MapAreaControllerRoute(
     areaName: "Admin",
