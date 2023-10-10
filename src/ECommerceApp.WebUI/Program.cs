@@ -21,7 +21,7 @@ using Serilog.Core;
 var builder = WebApplication.CreateBuilder(args);
 
 var mongoConnectionString = $"{builder.Configuration["MongoConnectionString:Connection"]}/{builder.Configuration["MongoConnectionString:DatabaseName"]}";
-var seqServer = $"http://localhost:5341";
+var seqServer = $"{builder.Configuration["Seq:ServerURL"]}";
 Logger log = new LoggerConfiguration()
 .WriteTo.MongoDB(mongoConnectionString, "Logs")
 .WriteTo.Seq(seqServer)

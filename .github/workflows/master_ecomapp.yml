@@ -85,6 +85,7 @@ jobs:
           docker volume create usersecrets
           docker volume create aspnethttps
           docker volume create images
+          docker volume create seqdata
 
      - name: Set up Docker Compose
        run:  docker-compose -f docker-compose.yml up -d
