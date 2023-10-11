@@ -60,7 +60,7 @@ public class DictionaryService : CRUDService<IRepository<Dictionary, ObjectId>, 
         return pagedData;
     }
 
-    public string GetWord(string key, ObjectId? languageId)
+    public string GetWord(string key, ObjectId? languageId = null)
     {
         languageId = languageId ?? _languageService.GetCurrentLanguageId();
         if (languageId is not ObjectId)
@@ -69,6 +69,6 @@ public class DictionaryService : CRUDService<IRepository<Dictionary, ObjectId>, 
         }
 
         var dictionary = Repository.GetAll().FirstOrDefault(d => d.Key == key && d.LanguageId == languageId.ToString());
-        return dictionary?.Value ?? string.Empty;
+        return dictionary?.Value ?? key;
     }
 }
