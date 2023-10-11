@@ -32,11 +32,11 @@ namespace ECommerceApp.WebUI.Middlewares
         {
             if (exception.InnerException is not null)
             {
-                _logger.LogError($"ExceptionType{exception.InnerException.GetType().ToString()} ExceptionMessage{exception.InnerException.Message}");
+                _logger.LogError($"ExceptionType: {exception.InnerException.GetType()} ExceptionMessage: {exception.InnerException.Message}");
             }
             else
             {
-                _logger.LogError($"ExceptionType: {exception.GetType().ToString()} ExceptionMessage: {exception.Message}");
+                _logger.LogError($"ExceptionType: {exception.GetType()} ExceptionMessage: {exception.Message}");
             }
             
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
