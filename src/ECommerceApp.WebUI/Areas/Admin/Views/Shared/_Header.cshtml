@@ -2203,7 +2203,7 @@
                                         data-kt-menu-placement="left-start" data-kt-menu-offset="-15px, 0">
 
 
-                                         @if (!string.IsNullOrEmpty(userPreferredLanguage))
+                                         @if (!string.IsNullOrEmpty(userPreferredLanguage) && languages.Any())
                                     {
                                         var lang = languages.FirstOrDefault(l => l.Code == userPreferredLanguage);
                                         
