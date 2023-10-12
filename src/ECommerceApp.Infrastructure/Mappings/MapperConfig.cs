@@ -16,6 +16,7 @@ public static class MapperConfig
             cfg.AddProfile<CategoryMapping>();
             cfg.AddProfile<LanguageMapping>();
             cfg.AddProfile<DictionaryMapping>();
+            cfg.AddProfile<BrandMapping>();
         });
         var mapper = config.CreateMapper();
         return mapper;
