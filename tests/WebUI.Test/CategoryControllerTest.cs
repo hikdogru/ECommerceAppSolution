@@ -23,6 +23,7 @@ namespace WebUI.Test
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<IWebHostEnvironment> _webHostEnvironmentMock;
         private readonly Mock<IToastNotification> _toastNotificationMock;
+        private readonly Mock<ILanguageService> _languageServiceMock;
 
 
         public CategoryControllerTest()
@@ -31,7 +32,9 @@ namespace WebUI.Test
             _mapperMock = new Mock<IMapper>();
             _webHostEnvironmentMock = new Mock<IWebHostEnvironment>();
             _toastNotificationMock = new Mock<IToastNotification>();
-            _categoryController = new CategoryController(_categoryServiceMock.Object, _webHostEnvironmentMock.Object, _mapperMock.Object, _toastNotificationMock.Object);
+            _languageServiceMock = new();
+            _categoryController = new CategoryController(_categoryServiceMock.Object, _webHostEnvironmentMock.Object,
+             _mapperMock.Object, _toastNotificationMock.Object, _languageServiceMock.Object);
         }
 
 
