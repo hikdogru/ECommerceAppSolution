@@ -46,10 +46,12 @@ builder.Services.AddScoped<IRepository<Category, ObjectId>, BaseRepository<Categ
 builder.Services.AddScoped<IRepository<Language, ObjectId>, BaseRepository<Language>>();
 builder.Services.AddScoped<IRepository<Dictionary, ObjectId>, BaseRepository<Dictionary>>();
 builder.Services.AddScoped<IRepository<Brand, ObjectId>, BaseRepository<Brand>>();
+builder.Services.AddScoped<IRepository<Tag, ObjectId>, BaseRepository<Tag>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 builder.Services.AddTransient<UserLanguageMiddleware>();
 builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();

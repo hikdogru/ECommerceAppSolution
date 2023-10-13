@@ -62,15 +62,15 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         /// <param name="page">Number of page</param>
         /// <param name="pageSize">Number of page size</param>
         /// <param name="filter">Optional filters</param>
-        /// <returns>List of filtered languages</returns>
+        /// <returns>List of filtered brands</returns>
         [HttpPost]
         public async Task<IActionResult> GetAll(int page, int pageSize = 10, GridFilters? filter = null)
         {
             var pagedBrands = await _brandService.Filter(page, pageSize, filter);
             var listOfBrands = pagedBrands.Select(x => x);
-            var mappedLanguages = _mapper.Map<IEnumerable<BrandViewModel>>(listOfBrands).ToList();
+            var mappedBrands = _mapper.Map<IEnumerable<BrandViewModel>>(listOfBrands).ToList();
             int total = pagedBrands.TotalItems;
-            return Json(new { data = mappedLanguages, total });
+            return Json(new { data = mappedBrands, total });
         }
 
 
@@ -121,6 +121,11 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             return Json(new { success = true, data = mappedBrand });
         }
 
+        /// <summary>
+        /// Handles HTTP POST requests to edit a brand.
+        /// </summary>
+        /// <param name="model">The <see cref="BrandModel"/> object containing the updated brand information.</param>
+        /// <returns>An <see cref="IActionResult"/> representing the result of the asynchronous operation.</returns>
         [HttpPost]
         public async Task<IActionResult> Edit(BrandModel model)
         {
