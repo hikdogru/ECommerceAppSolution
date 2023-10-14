@@ -79,14 +79,6 @@ jobs:
      - name: Create Docker network
        run:  docker network create backend
 
-     - name: Create Docker volume
-       run: | 
-          docker volume create mongodata
-          docker volume create usersecrets
-          docker volume create aspnethttps
-          docker volume create images
-          docker volume create seqdata
-
      - name: Set up Docker Compose
        run:  docker-compose -f docker-compose.yml up -d
 
@@ -102,7 +94,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
-          script: cd ecommerceapp/ECommerceAppSolution && git pull && docker-compose -f docker-compose.yml pull && docker-compose -f docker-compose.yml up -d
+          script: |
+            cd ecommerceapp/ECommerceAppSolution && \
+            git pull && \
+            docker volume create mongodata usersecrets aspnethttps images seqdata && \
+            docker-compose -f docker-compose.yml pull && \
+            docker-compose -f docker-compose.yml up -d
    
 
       
