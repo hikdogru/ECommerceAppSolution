@@ -97,7 +97,11 @@ jobs:
           script: |
             cd ecommerceapp/ECommerceAppSolution && \
             git pull && \
-            docker volume create mongodata usersecrets aspnethttps images seqdata && \
+            docker volume create mongodata && \
+            docker volume create usersecrets && \
+            docker volume create aspnethttps && \
+            docker volume create images && \
+            docker volume create seqdata && \
             docker-compose -f docker-compose.yml pull && \
             docker-compose -f docker-compose.yml up -d
    
