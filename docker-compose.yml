@@ -53,9 +53,4 @@ networks:
      driver: bridge
      external: true
 
-volumes:
-  usersecrets:
-  aspnethttps:
-  mongodata:     
-  images:
-  seqdata:     
+
