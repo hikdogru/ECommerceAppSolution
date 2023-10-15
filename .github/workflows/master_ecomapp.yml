@@ -85,19 +85,8 @@ jobs:
      - name: Build and Push Docker Image
        run: |
           docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
-
-     - name: Set up MongoDB
-       uses: docker://mongo:latest
-       with:
-        args: -p 27017:27017
-
-     - name: Create MongoDB User
-       run: |
-        echo "Creating MongoDB user..."
-        mongo --eval "db.createUser({ user: 'admin', pwd: 'toor', roles: ['readWrite', 'dbAdmin'] })" --host localhost --port 27017
-        echo "MongoDB user created successfully." 
-
+          docker-compose -f docker-compose.yml push      
+                   
      - name: Set up SSH
        uses: appleboy/ssh-action@master
        with:
