@@ -10,7 +10,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8008
-      - MongoConnectionString__Connection=mongodb://admin:toor@20.224.160.99:27017/ecommerceapp?retryWrites=true&w=majority&authSource=admin
+      - MongoConnectionString__Connection=mongodb://admin:toor@mongo:27017/ecommerceapp?retryWrites=true&w=majority&authSource=admin
       - MongoConnectionString__DatabaseName=ecommerceapp
     ports:
       - "8008:8008"
