@@ -26,6 +26,9 @@ services:
   mongo:
     container_name: mongo_container
     image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: roottoor
     ports:     
      - "27017:27017"
     volumes:
