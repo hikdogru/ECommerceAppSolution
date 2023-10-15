@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   ecommerceapp.webui:
@@ -11,7 +11,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8008
       - MongoConnectionString__Connection=mongodb://mongo:27017
-      - MongoConnectionString__DatabaseName=ecommerceapp      
+      - MongoConnectionString__DatabaseName=ecommerceapp
     ports:
       - "8008:8008"
     volumes:
@@ -20,45 +20,44 @@ services:
       - images:/app/wwwroot/assets/images
 
     depends_on:
-     - mongo
+      - mongo
     networks:
-    - backend
+      - backend
   mongo:
     container_name: mongo_container
     image: mongo:latest
     environment:
-      MONGO_INITDB_ROOT_USERNAME: mongoadmin
-      MONGO_INITDB_ROOT_PASSWORD: roottoor
-    ports:     
-     - "27017:27017"
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    ports:
+      - "27017:27017"
     volumes:
-     - mongodata:/data/db
+      - mongodata:/data/db
     networks:
-     - backend
+      - backend
     restart: always
-
 
   seq:
     container_name: seq
     image: datalust/seq:latest
-    ports:     
-     - "5341:80"
+    ports:
+      - "5341:80"
     volumes:
-     - seqdata:/data
+      - seqdata:/data
     environment:
       - ACCEPT_EULA=Y
     networks:
-     - backend
+      - backend
     restart: unless-stopped
 
 networks:
-   backend:
-     driver: bridge
-     external: true
+  backend:
+    driver: bridge
+    external: true
 
 volumes:
   usersecrets:
   aspnethttps:
-  mongodata:     
+  mongodata:
   images:
-  seqdata:     
+  seqdata:
