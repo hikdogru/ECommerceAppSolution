@@ -8,6 +8,7 @@ using ECommerceApp.Core.DTOs;
 using ECommerceApp.Core.Extensions;
 using ECommerceApp.Core.Helpers;
 using ECommerceApp.WebUI.Models.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,6 +20,7 @@ using NToastNotify;
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class CategoryController : Controller
     {
         #region Fields

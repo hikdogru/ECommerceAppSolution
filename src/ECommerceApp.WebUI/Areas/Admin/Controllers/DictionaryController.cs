@@ -3,6 +3,7 @@ using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities.Language;
 using ECommerceApp.WebUI.Areas.Admin.Models.Localization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
@@ -11,6 +12,7 @@ using NToastNotify;
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public class DictionaryController : Controller
 {
     #region Fields

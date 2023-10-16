@@ -8,6 +8,7 @@ using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities.System;
 using ECommerceApp.WebUI.Areas.Admin.Models.System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;
@@ -17,6 +18,7 @@ using NToastNotify;
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class ParameterController : Controller
     {
         #region Fields

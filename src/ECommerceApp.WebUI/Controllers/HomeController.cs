@@ -23,13 +23,13 @@ namespace ECommerceApp.WebUI.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {        
+        {
             return View();
         }
 
         public IActionResult ChangeUILanguage(string languageCode)
         {
-            if(!string.IsNullOrEmpty(languageCode))
+            if (!string.IsNullOrEmpty(languageCode))
             {
                 _cookieService.SetCookieValue("EcommerceApp_UserLanguage", languageCode);
             }

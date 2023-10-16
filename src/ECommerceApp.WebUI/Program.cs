@@ -5,7 +5,6 @@ using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.Domain.Entities.System;
 using ECommerceApp.Core.Domain.Interfaces;
 using ECommerceApp.Core.Domain.Interfaces.Repository;
-using ECommerceApp.Core.Helpers;
 using ECommerceApp.Core.Services.Abstract;
 using ECommerceApp.Core.Services.Concrete;
 using ECommerceApp.Infrastructure.Context;
@@ -14,12 +13,16 @@ using ECommerceApp.WebUI.Mappings.Product;
 using ECommerceApp.WebUI.Middlewares;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using NToastNotify;
 using Serilog;
 using Serilog.Core;
+using Microsoft.EntityFrameworkCore;
+using ECommerceApp.Core.Domain.Entities.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 var mongoConnectionString = $"{builder.Configuration["MongoConnectionString:Connection"]}/{builder.Configuration["MongoConnectionString:DatabaseName"]}";
 var seqServer = $"{builder.Configuration["Seq:ServerURL"]}";
@@ -36,7 +39,7 @@ builder.Services.AddControllersWithViews().AddNToastNotifyToastr(new ToastrOptio
 {
     ProgressBar = true
 });
-
+builder.Services.AddRazorPages();
 builder.Services.AddFluentValidationAutoValidation(config =>
 {
     config.DisableDataAnnotationsValidation = true;
@@ -62,6 +65,19 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 
 
+var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
+?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddIdentity<AppUser, AppRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
+
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login"; 
+});
 
 
 var app = builder.Build();
@@ -75,13 +91,21 @@ if (!app.Environment.IsDevelopment())
 }
 
 
+// app.UseStatusCodePages(async c =>
+//         {
+//             if (c.HttpContext.Response.StatusCode == 401)
+//             {
+//                 c.HttpContext.Response.Redirect("/Identity/Account/Login");
+//             }
+//         });
+
 app.UseStaticFiles();
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 app.UseRouting();
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseNToastNotify();
 
@@ -92,7 +116,7 @@ app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 #endregion
 
-
+app.MapRazorPages();
 app.MapAreaControllerRoute(
     areaName: "Admin",
     name: "Admin Area",

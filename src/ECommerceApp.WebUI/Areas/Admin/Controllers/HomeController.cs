@@ -1,10 +1,12 @@
 ﻿using ECommerceApp.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
-{
+{    
     [Area("Admin")]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

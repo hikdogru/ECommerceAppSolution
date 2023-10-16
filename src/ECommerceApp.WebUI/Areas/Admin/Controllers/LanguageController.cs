@@ -3,6 +3,7 @@ using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities.Language;
 using ECommerceApp.WebUI.Areas.Admin.Models.Localization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using NToastNotify;
@@ -10,6 +11,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers;
 [Area("Admin")]
+[Authorize]
 public class LanguageController : Controller
 {
     #region Fields

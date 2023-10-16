@@ -9,6 +9,7 @@ using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.Helpers;
 using ECommerceApp.WebUI.Areas.Admin.Models.Catalog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -17,6 +18,7 @@ using NToastNotify;
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class BrandController : Controller
     {
         #region Fields
