@@ -64,11 +64,10 @@ services:
       - mssqldata:/var/opt/mssql
     networks:
       - backend
-    resources:
-      limits:
-        memory: 900M
-      reservations:
-        memory: 300M
+    deploy:
+      resources:
+        limits:
+          memory: 900M
     restart: always
 
 networks:
