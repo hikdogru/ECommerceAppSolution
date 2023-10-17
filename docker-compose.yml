@@ -54,7 +54,7 @@ services:
 
   mssql:
     container_name: mssql
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: justin2004/mssql_server_tiny
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Roottoor123!"
@@ -64,10 +64,6 @@ services:
       - mssqldata:/var/opt/mssql
     networks:
       - backend
-    deploy:
-      resources:
-        limits:
-          memory: 900M
     restart: always
 
 networks:
