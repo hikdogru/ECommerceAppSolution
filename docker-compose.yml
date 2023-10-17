@@ -53,7 +53,7 @@ services:
     restart: unless-stopped
 
   mssql:
-    container_name: mssql
+    container_name: mssql_container
     image: justin2004/mssql_server_tiny
     environment:
       ACCEPT_EULA: "Y"
