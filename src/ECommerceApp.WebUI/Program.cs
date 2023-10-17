@@ -68,7 +68,10 @@ builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
 ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString, opt =>
+{
+    opt.EnableRetryOnFailure();
+}));
 builder.Services.AddIdentity<AppUser, AppRole>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
@@ -76,7 +79,7 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login"; 
+    options.LoginPath = "/Identity/Account/Login";
 });
 
 
@@ -90,14 +93,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-
-// app.UseStatusCodePages(async c =>
-//         {
-//             if (c.HttpContext.Response.StatusCode == 401)
-//             {
-//                 c.HttpContext.Response.Redirect("/Identity/Account/Login");
-//             }
-//         });
 
 app.UseStaticFiles();
 app.UseSerilogRequestLogging();
@@ -126,8 +121,6 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
 
 
 app.Run();
