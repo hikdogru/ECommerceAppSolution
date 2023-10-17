@@ -64,6 +64,7 @@ services:
       - mssqldata:/var/opt/mssql
     networks:
       - backend
+    mem_limit: 1g
 
 networks:
   backend:
