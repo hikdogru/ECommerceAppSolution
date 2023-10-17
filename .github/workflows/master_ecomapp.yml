@@ -82,13 +82,6 @@ jobs:
      - name: Set up Docker Compose
        run:  docker-compose -f docker-compose.yml up -d
 
-     - name: Wait for SQL Server to start
-       run: |
-        # Replace 'sql-server-container' with the name of your SQL Server container
-        until docker exec mssql_container /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Roottoor123! -Q "SELECT 1"; do
-          sleep 1
-        done 
-
      - name: Build and Push Docker Image
        run: |
           docker-compose -f docker-compose.yml build

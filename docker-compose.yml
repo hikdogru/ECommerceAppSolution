@@ -12,7 +12,7 @@ services:
       - ASPNETCORE_URLS=http://+:8008
       - MongoConnectionString__Connection=mongodb://admin:toor@mongo:27017
       - MongoConnectionString__DatabaseName=ecommerceapp
-      - ConnectionStrings__ApplicationDbContextConnection=Server=mssql;Database=ECommerceApp;User ID=sa;Password=Roottoor123!;Trust Server Certificate=True;MultipleActiveResultSets=True;Trusted_Connection=False
+      - ConnectionStrings__ApplicationDbContextConnection=Server=mssql;Database=ECommerceApp;User ID=sa;Password=Roottoor123!;Trusted_Connection=False
     ports:
       - "8008:8008"
     volumes:
