@@ -64,7 +64,12 @@ services:
       - mssqldata:/var/opt/mssql
     networks:
       - backend
-    mem_limit: 1g
+    resources:
+      limits:
+        memory: 900M
+      reservations:
+        memory: 300M
+    restart: always
 
 networks:
   backend:
