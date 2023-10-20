@@ -47,7 +47,7 @@ namespace ECommerceApp.WebUI.Controllers
             if (statusCode.HasValue && statusCode == StatusCodes.Status404NotFound)
             {
                 return View("404");
-            }            
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

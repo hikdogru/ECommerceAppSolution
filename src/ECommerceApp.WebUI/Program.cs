@@ -13,13 +13,13 @@ using ECommerceApp.WebUI.Mappings.Product;
 using ECommerceApp.WebUI.Middlewares;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using NToastNotify;
 using Serilog;
 using Serilog.Core;
 using Microsoft.EntityFrameworkCore;
 using ECommerceApp.Core.Domain.Entities.Identity;
+using ECommerceApp.Application.Identity.JWT;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,11 +58,14 @@ builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IParameterService, ParameterService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 builder.Services.AddTransient<UserLanguageMiddleware>();
 builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
+builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+
 
 
 var connectionString = builder.Configuration.GetConnectionString("ApplicationDbContextConnection")
@@ -72,16 +75,20 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 {
     opt.EnableRetryOnFailure();
 }));
-builder.Services.AddIdentity<AppUser, AppRole>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+
+
+builder.Services.AddIdentity<AppUser, AppRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+})
+.AddRoles<AppRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
 });
-
 
 var app = builder.Build();
 

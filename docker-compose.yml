@@ -66,6 +66,25 @@ services:
       - backend
     restart: always
 
+  ecommerceapp.authservice:
+    image: hikdogru/ecommerceappauthservice:latest
+    build:
+      context: .
+      dockerfile: src/Services/Auth/ECommerceApp.AuthService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8009
+      - MongoConnectionString__Connection=mongodb://admin:toor@mongo:27017
+      - MongoConnectionString__DatabaseName=ecommerceapp
+      - ConnectionStrings__ApplicationDbContextConnection=Server=mssql;Database=ECommerceApp;User ID=sa;Password=Roottoor123!;Trust Server Certificate=True;MultipleActiveResultSets=True
+    ports:
+      - "8009:8009"
+    depends_on:
+      - mongo
+      - mssql
+    networks:
+      - backend
+
 networks:
   backend:
     driver: bridge
@@ -78,3 +97,4 @@ volumes:
   images:
   seqdata:
   mssqldata:
+

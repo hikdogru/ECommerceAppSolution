@@ -1,4 +1,6 @@
 ﻿using ECommerceApp.WebUI.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -6,7 +8,7 @@ using System.Diagnostics;
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {    
     [Area("Admin")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
