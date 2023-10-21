@@ -67,6 +67,7 @@ services:
     restart: always
 
   ecommerceapp.authservice:
+    container_name: authservice_container
     image: hikdogru/ecommerceappauthservice:latest
     build:
       context: .
@@ -82,6 +83,22 @@ services:
     depends_on:
       - mongo
       - mssql
+    networks:
+      - backend
+  
+  ecommerceapp.apigateway:
+    container_name: apigateway_container
+    image: hikdogru/ecommerceappapigateway:latest
+    build:
+      context: .
+      dockerfile: src/Gateway/ECommerceApp.ApiGateway/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development      
+      - ASPNETCORE_URLS=http://+:8010
+    ports:
+      - "8010:8010"
+    depends_on:
+      - ecommerceapp.authservice
     networks:
       - backend
 
