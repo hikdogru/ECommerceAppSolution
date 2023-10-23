@@ -10,7 +10,16 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/v1/auth/test",
-            "UpstreamHttpMethod": [ "GET"]
+            "UpstreamHttpMethod": [
+                "GET"
+            ],
+            "AuthenticationOptions": {
+                "AuthenticationProviderKey": "Bearer",
+                "AllowedScopes": []
+            },
+            "RouteClaimsRequirement": {
+                "role": ["Customer"]
+            }            
         },
         {
             "DownstreamPathTemplate": "/api/v1/auth/login",
@@ -22,7 +31,9 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/v1/auth/login",
-            "UpstreamHttpMethod": [ "POST"]
+            "UpstreamHttpMethod": [
+                "POST"
+            ]
         },
         {
             "DownstreamPathTemplate": "/api/v1/auth/register",
@@ -34,7 +45,9 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/v1/auth/register",
-            "UpstreamHttpMethod": [ "POST"]
+            "UpstreamHttpMethod": [
+                "POST"
+            ]
         }
     ],
     "GlobalConfiguration": {

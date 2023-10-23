@@ -11,7 +11,7 @@ namespace ECommerceApp.AuthService.Controllers
 {
     [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/v{version:apiVersion}/[controller]")]    
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class AuthController : ApiControllerBase
     {
         private readonly IUserService _userService;
@@ -48,14 +48,13 @@ namespace ECommerceApp.AuthService.Controllers
 
             return CreateActionResult<object>(loginResponse, statusCode: StatusCodes.Status200OK);
         }
-        
+
         [HttpGet]
-        [Authorize(Roles ="Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Customer", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("Test")]
         public IActionResult Test()
         {
             return Ok("Success!");
         }
-
     }
 }
