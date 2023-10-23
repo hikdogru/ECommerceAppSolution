@@ -20,6 +20,7 @@ using Serilog.Core;
 using Microsoft.EntityFrameworkCore;
 using ECommerceApp.Core.Domain.Entities.Identity;
 using ECommerceApp.Application.Identity.JWT;
+using ECommerceApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +84,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
 })
 .AddRoles<AppRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.AddTransient<AdminUserSeeder>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -130,5 +131,18 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-
+await ApplyMigration();
 app.Run();
+
+
+async Task ApplyMigration()
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (db.Database.GetPendingMigrations().Count() > 0)
+    {
+        db.Database.Migrate();
+        var adminUserSeeder = scope.ServiceProvider.GetRequiredService<AdminUserSeeder>();
+        await adminUserSeeder.SeedAdminUserAsync();
+    }
+}
