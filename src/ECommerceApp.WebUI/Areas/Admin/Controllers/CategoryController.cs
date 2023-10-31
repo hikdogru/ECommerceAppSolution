@@ -1,19 +1,16 @@
-﻿using System.Collections;
-using System.Xml.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using ECommerceApp.Application.Services.Abstract;
 using ECommerceApp.Core.Domain;
 using ECommerceApp.Core.Domain.Entities.Product;
 using ECommerceApp.Core.DTOs;
-using ECommerceApp.Core.Extensions;
 using ECommerceApp.Core.Helpers;
 using ECommerceApp.WebUI.Models.Category;
+using ECommerceApp.WebUI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
+using MongoDB.Bson.IO;
 using NToastNotify;
 
 
@@ -30,6 +27,9 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         private readonly IWebHostEnvironment _env;
         private readonly IMapper _mapper;
         private readonly IToastNotification _toastNotification;
+        private readonly IApiBaseService _apiBaseService;
+        private readonly IConfiguration _configuration;
+        private readonly ILogger<CategoryController> _logger;
 
         #endregion
 
@@ -39,20 +39,26 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             IWebHostEnvironment env,
             IMapper mapper,
             IToastNotification toastNotification,
-            ILanguageService languageService)
+            ILanguageService languageService,
+            IApiBaseService apiBaseService,
+            IConfiguration configuration,
+            ILogger<CategoryController> logger)
         {
             _categoryService = categoryService;
             _env = env;
             _mapper = mapper;
             _toastNotification = toastNotification;
             _languageService = languageService;
+            _apiBaseService = apiBaseService;
+            _configuration = configuration;
+            _logger = logger;
         }
 
         #endregion
 
         #region Methods
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View();
         }
@@ -68,17 +74,26 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         {
             try
             {
-                var pagedCategories = await _categoryService.Filter(page, pageSize, filter);
+                string catalogServiceUrl = _configuration["ServiceUrls:CatalogService"];               
+                var requestModel = new WebUI.Models.ApiRequestModel
+                {
+                    Url = $"{catalogServiceUrl}/api/v1/Category/Get?page={page}&size={pageSize}"
+                };
+
+                if (filter is not null && filter.Filters is List<GridFilterModel>)
+                    requestModel.Data = filter;
+
+                var response = await _apiBaseService.SendAsync(requestModel);
+                var pagedCategories = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<CategoryDTO>?>(Convert.ToString(response.Data));
                 var listOfCategories = pagedCategories.Select(x => x);
                 var mappedCategories = _mapper.Map<IEnumerable<CategoryViewModel>>(listOfCategories).ToList();
                 var categoryHierarchies = _categoryService.GetCategoryTree().Where(c => mappedCategories.Any(mc => mc.Id == c.Id));
                 mappedCategories.ForEach(c => c.Hierarchy = categoryHierarchies.FirstOrDefault(ch => ch.Id == c.Id)?.Text);
-                int total = pagedCategories.TotalItems;
+                int? total = response.TotalCounts;
                 return Json(new { data = mappedCategories, total });
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
         }

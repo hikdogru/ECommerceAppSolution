@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace ECommerceApp.Core.DTOs;
 
 [BsonIgnoreExtraElements]
-public record CategoryDTO(ObjectId Id, List<CategoryLanguage> CategoryLanguages, bool IsActive, List<CategoryMedia>? CategoryMedias)
+public record CategoryDTO(string Id, List<CategoryLanguage> CategoryLanguages, bool IsActive, List<CategoryMedia>? CategoryMedias)
 {
 
 };

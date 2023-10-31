@@ -6,7 +6,7 @@ namespace ECommerceApp.WebApiAbstraction.Controllers;
 
 public abstract class ApiControllerBase : ControllerBase
 {
-    protected IActionResult CreateActionResult<T>(T data, int statusCode, Exception? exception = null)
+    protected IActionResult CreateActionResult<T>(T data, int statusCode, Exception? exception = null, int? totalCounts = null)
     {
         var response = new ResponseModel<T>
         {
@@ -19,6 +19,11 @@ public abstract class ApiControllerBase : ControllerBase
         if (exception != null)
         {
             response.Errors.AddRange(GetExceptionMessages(exception));
+        }
+
+        if(totalCounts is not null)
+        {
+            response.TotalCounts = totalCounts;
         }
 
         return new ObjectResult(response)

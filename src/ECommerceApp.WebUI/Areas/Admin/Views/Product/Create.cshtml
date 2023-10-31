@@ -1,0 +1,692 @@
+@model ProductModel
+
+
+<div id="kt_app_toolbar" class="app-toolbar  py-3 py-lg-6 ">
+
+    <!--begin::Toolbar container-->
+    <div id="kt_app_toolbar_container" class="app-container  container-xxl d-flex flex-stack ">
+
+        <!--begin::Page title-->
+        <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3 ">
+            <!--begin::Title-->
+            <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
+                Add Product
+            </h1>
+            <!--end::Title-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="../../../index.html" class="text-muted text-hover-primary">
+                        Home
+                    </a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    eCommerce
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    Catalog
+                </li>
+                <!--end::Item-->
+
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+
+    </div>
+    <!--end::Toolbar container-->
+</div>
+
+
+
+<div id="kt_app_content" class="app-content  flex-column-fluid ">
+
+
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container  container-xxl ">
+        <!--begin::Form-->
+        <form class="form d-flex flex-column flex-lg-row" asp-action="Create" asp-controller="Product" method="post"
+            enctype="multipart/form-data">
+            <!--begin::Aside column-->
+            <div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+                <!--begin::Product & tags-->
+                <div class="card card-flush py-4">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <!--begin::Card title-->
+                        <div class="card-title">
+                            <h2>Product Details</h2>
+                        </div>
+                        <!--end::Card title-->
+                    </div>
+                    <!--end::Card header-->
+
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <!--begin::Input group-->
+                        <!--begin::Label-->
+                        <label class="form-label">Categories</label>
+                        <!--end::Label-->
+
+                        <!--begin::Select2-->
+                        <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
+                            data-allow-clear="true" multiple="multiple" asp-items="ViewBag.Categories">
+                            <option></option>                            
+                        </select>
+                        <!--end::Select2-->
+
+                        <!--end::Input group-->
+
+                        <!--begin::Input group-->
+                        <!--begin::Label-->
+                        <label class="form-label d-block">Tags</label>
+                        <!--end::Label-->
+
+                        <!--begin::Input-->
+                      <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
+                            data-allow-clear="true" multiple="multiple" asp-items="ViewBag.Tags">
+                            <option></option>                            
+                        </select>
+                        <!--end::Input-->
+
+                        <!--begin::Label-->
+                        <label class="form-label">Brand</label>
+                        <!--end::Label-->
+
+                        <!--begin::Select2-->
+                        <select class="form-select mb-2" data-control="select2" data-placeholder="Select an option"
+                            data-allow-clear="true" asp-items="ViewBag.Brands">
+                            <option></option>                           
+                        </select>
+                        <!--end::Select2-->
+
+
+                        <!--end::Input group-->
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Product & tags-->
+                <!--begin::Status-->
+                <div class="card card-flush py-4">
+                    <!--begin::Card header-->
+                    <div class="card-header">
+                        <!--begin::Card title-->
+                        <div class="card-title">
+                            <h2>Status</h2>
+                        </div>
+                        <!--end::Card title-->
+
+                        <!--begin::Card toolbar-->
+                        <div class="card-toolbar">
+                            <div class="rounded-circle bg-success w-15px h-15px" id="kt_ecommerce_add_product_status">
+                            </div>
+                        </div>
+                        <!--begin::Card toolbar-->
+                    </div>
+                    <!--end::Card header-->
+
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <!--begin::Select2-->
+                        <select class="form-select mb-2" data-placeholder="Select an option" asp-for="IsItOffSale">
+                            <option value="true" selected>On Sale</option>
+                            <option value="false">Off Sale</option>
+                        </select>
+                        <!--end::Select2-->
+
+                        <!--begin::Datepicker-->
+                        <div class="d-none mt-10">
+                            <label for="kt_ecommerce_add_product_status_datepicker" class="form-label">Select publishing
+                                date and time</label>
+                            <input class="form-control" id="kt_ecommerce_add_product_status_datepicker"
+                                placeholder="Pick date & time" />
+                        </div>
+                        <!--end::Datepicker-->
+                    </div>
+                    <!--end::Card body-->
+                </div>
+                <!--end::Status-->
+
+
+            </div>
+            <!--end::Aside column-->
+
+            <!--begin::Main column-->
+            <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+                <!--begin:::Tabs-->
+                <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
+                    <!--begin:::Tab item-->
+                    <li class="nav-item">
+                        <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
+                            href="#kt_ecommerce_add_product_general">General</a>
+                    </li>
+                    <!--end:::Tab item-->
+
+                    <!--begin:::Tab item-->
+                    <li class="nav-item">
+                        <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                            href="#kt_ecommerce_add_product_advanced">Advanced</a>
+                    </li>
+                    <!--end:::Tab item-->
+
+                </ul>
+                <!--end:::Tabs-->
+                <!--begin::Tab content-->
+                <div class="tab-content">
+                    <!--begin::Tab pane-->
+                    <div class="tab-pane fade show active" id="kt_ecommerce_add_product_general" role="tab-panel">
+                        <div class="d-flex flex-column gap-7 gap-lg-10">
+
+                            <!--begin::General options-->
+                            <div class="card card-flush py-4">
+
+                                <div class="card-body">
+
+
+                                    <ul class="nav nav-tabs nav-line-tabs mb-1 fs-4">
+
+                                        @for (int i = 0; i < Model.ProductLanguages.Count; i++)
+                                        {
+                                            var productLanguage = Model.ProductLanguages[i];
+                                            <li class="nav-item">
+                                                <a class="nav-link @(i == 0 ? "active" : "")" data-bs-toggle="tab"
+                                                    href="#productTabPanel@(productLanguage.LanguageCode)">@productLanguage.LanguageCode</a>
+                                            </li>
+                                        }
+                                    </ul>
+
+                                    @for (int i = 0; i < Model.ProductLanguages.Count; i++)
+                                    {
+                                        var productLanguage = Model.ProductLanguages[i];
+                                        <input type="hidden" asp-for="ProductLanguages[i].LanguageId" />
+                                        <input type="hidden" asp-for="ProductLanguages[i].LanguageCode" />
+
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade @(i == 0 ? "show active" : "")"
+                                                id="productTabPanel@(productLanguage.LanguageCode)" role="tabpanel">
+                                                <!--begin::General options-->
+                                                <div class="card card-flush py-4">
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body p-0">
+                                                        <!--begin::Input group-->
+                                                        <div class="mb-5 fv-row fv-plugins-icon-container">
+                                                            <!--begin::Label-->
+                                                            <label class="required form-label">Product Name</label>
+                                                            <!--end::Label-->
+                                                            <!--begin::Input-->
+                                                            <input asp-for="ProductLanguages[i].Name"
+                                                                class="form-control mb-2" placeholder="Product name"
+                                                                autocomplete="off">
+                                                            <span asp-validation-for="ProductLanguages[i].Name"
+                                                                class="text-danger"></span>
+                                                            <!--end::Input-->
+                                                        </div>
+                                                        <!--end::Input group-->
+                                                        <!--begin::Input group-->
+                                                        <div class="mb-5 fv-row fv-plugins-icon-container">
+                                                            <!--begin::Label-->
+                                                            <label class="form-label">Description</label>
+                                                            <!--end::Label-->
+                                                            <!--begin::Editor-->
+                                                            <input asp-for="ProductLanguages[i].Description"
+                                                                class="form-control content-editor" />
+                                                            <span asp-validation-for="ProductLanguages[i].Description"
+                                                                class="text-danger"></span>
+
+                                                            <!--end::Editor-->
+                                                        </div>
+                                                        <!--end::Input group-->
+
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                </div>
+                                                <!--end::General options-->
+                                            </div>
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                            <!--end::General options-->
+
+                            <!--begin::Media-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <!--begin::Card title-->
+                                    <div class="card-title">
+                                        <h2>Media</h2>
+                                    </div>
+                                    <!--end::Card title-->
+                                </div>
+                                <!--end::Card header-->
+
+                                <!--begin::Card body-->
+                                <div class="card-body text-center pt-0">
+                                    <!--begin::Image input-->
+                                    <!--begin::Image input placeholder-->
+                                    <style>
+                                        .image-input-placeholder {
+                                            background-image: url('../../../assets/media/svg/files/blank-image.svg');
+                                        }
+
+                                        [data-bs-theme="dark"] .image-input-placeholder {
+                                            background-image: url('../../../assets/media/svg/files/blank-image-dark.svg');
+                                        }
+                                    </style>
+                                    <!--end::Image input placeholder-->
+
+                                    <!--begin::Form group-->
+                                    <div class="form-group mb-3" id="mediaDiv">
+                                        <div class="d-flex flex-row gap-3">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+
+                                                <div
+                                                    class="form-group d-flex flex-wrap align-items-center gap-5 p-3"
+                                                    id="mediaItemDiv">
+                                                    <!--begin::Image input-->
+                                                    <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                                        data-kt-image-input="true">
+                                                        <!--begin::Preview existing avatar-->
+                                                        <div class="image-input-wrapper w-150px h-150px"></div>
+                                                        <!--end::Preview existing avatar-->
+
+                                                        <!--begin::Label-->
+                                                        <label
+                                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                            data-kt-image-input-action="change" data-bs-toggle="tooltip"
+                                                            title="Change avatar">
+                                                            <!--begin::Icon-->
+                                                            <i class="ki-duotone ki-pencil fs-7"><span
+                                                                    class="path1"></span><span class="path2"></span></i>
+                                                            <!--end::Icon-->
+
+                                                            <!--begin::Inputs-->
+                                                            <input type="file" accept=".png, .jpg, .jpeg"
+                                                                asp-for="Images[i].File" />                                                           
+                                                            <!--end::Inputs-->
+                                                        </label>
+                                                        <!--end::Label-->
+
+
+
+
+                                                        <!--begin::Cancel-->
+                                                        <span
+                                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                            data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
+                                                            title="Cancel avatar">
+                                                            <i class="ki-duotone ki-cross fs-2"><span
+                                                                    class="path1"></span><span class="path2"></span></i>
+                                                        </span>
+                                                        <!--end::Cancel-->
+
+                                                        <!--begin::Remove-->
+                                                        <span
+                                                            class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                            data-kt-image-input-action="remove" data-bs-toggle="tooltip"
+                                                            title="Remove avatar">
+                                                            <i class="ki-duotone ki-cross fs-2"><span
+                                                                    class="path1"></span><span class="path2"></span></i>
+                                                        </span>
+                                                        <!--end::Remove-->
+
+
+                                                    </div>
+                                                    <!--end::Image input-->
+                                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2"
+                                                        for="IsDefault">Is Default</label>
+                                                    <label
+                                                        class="form-check form-switch form-check-custom form-check-solid mw-100 w-125px">
+                                                        <input asp-for="Images[i].IsDefault" class="form-check-input"
+                                                            type="checkbox">
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                    <!--end::Form group-->
+
+
+
+                                </div>
+                                <!--end::Card body-->
+                            </div>
+                            <!--end::Media-->
+
+
+                            <!--begin::Pricing-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Pricing</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Base Price</label>
+                                        <!--end::Label-->
+
+                                        <!--begin::Input-->
+                                        <input type="number" name="price" class="form-control mb-2" asp-for="Price"
+                                            placeholder="Product price" value="" />
+                                        <!--end::Input-->
+
+
+                                    </div>
+                                    <!--end::Input group-->
+
+                                    <!--begin::Tax-->
+                                    <div class="d-flex flex-wrap gap-5">
+
+                                        <!--begin::Input group-->
+                                        <div class="fv-row w-100 flex-md-root">
+                                            <!--begin::Label-->
+                                            <label class="form-label">VAT Amount (%)</label>
+                                            <!--end::Label-->
+
+                                            <!--begin::Input-->
+                                            <input type="number" class="form-control mb-2" value="" min="0"
+                                                asp-for="TaxRate" />
+                                            <!--end::Input-->
+
+                                        </div>
+                                        <!--end::Input group-->
+                                    </div>
+                                    <!--end:Tax-->
+                                </div>
+                                <!--end::Card header-->
+                            </div>
+                            <!--end::Pricing-->
+                        </div>
+                    </div>
+                    <!--end::Tab pane-->
+
+                    <!--begin::Tab pane-->
+                    <div class="tab-pane fade" id="kt_ecommerce_add_product_advanced" role="tab-panel">
+                        <div class="d-flex flex-column gap-7 gap-lg-10">
+
+                            <!--begin::Inventory-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Inventory</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label">Product Code</label>
+                                        <!--end::Label-->
+
+                                        <!--begin::Input-->
+                                        <input type="text" asp-for="Code" class="form-control mb-2"
+                                            placeholder="Product Code" />
+                                        <!--end::Input-->
+
+                                    </div>
+                                    <!--end::Input group-->
+
+                                    <!--begin::Input group-->
+                                    <div class="mb-10 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="required form-label" asp-for="GroupCode">Group Code</label>
+                                        <!--end::Label-->
+
+                                        <!--begin::Input-->
+                                        <input type="text" asp-for="GroupCode" class="form-control mb-2"
+                                            placeholder="Group Code" />
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Input group-->
+
+
+
+                                </div>
+                                <!--end::Card header-->
+                            </div>
+                            <!--end::Inventory-->
+
+                            <!--begin::Variations-->
+                            <div class="card card-flush py-4">
+                                <!--begin::Card header-->
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h2>Variations</h2>
+                                    </div>
+                                </div>
+                                <!--end::Card header-->
+
+                                <!--begin::Card body-->
+                                <div class="card-body pt-0">
+                                    <!--begin::Input group-->
+                                    <div class="" data-kt-ecommerce-catalog-add-product="auto-options">
+                                        <!--begin::Label-->
+                                        <label class="form-label">Add Product Variations</label>
+                                        <!--end::Label-->
+
+                                        <div class="form-group d-flex flex-wrap align-items-center gap-5 mb-3">
+
+                                            <input type="text" class="form-control mw-100 w-200px" id="variationCount"
+                                                placeholder="Variation count" />
+                                            <input type="text" class="form-control mw-100 w-200px"
+                                                id="specificationCount" placeholder="Specification count" />
+
+                                            <a href="#" class="btn btn-success" id="createVariationBtn">Create
+                                                Variation</a>
+                                        </div>
+                                        <!--begin::Repeater-->
+                                        <div id="kt_ecommerce_add_product_options">
+                                            <!--begin::Form group-->
+                                            <div class="form-group d-none mb-3" id="variationDiv">
+                                                <div data-repeater-list="kt_ecommerce_add_product_options"
+                                                    class="d-flex flex-column gap-3">
+                                                    <div data-repeater-item
+                                                        class="form-group d-flex flex-wrap align-items-center gap-5 p-3"
+                                                        id="specificationDiv">
+                                                        <!--begin::Select2-->
+                                                        <div class="w-100 w-md-175px">                                                          
+                                                               
+
+                        <select asp-items="ViewBag.Specifications" class="form-select" id="specificationName">
+                                                <option value="">Choose specification</option>
+                                            </select>
+                                                        </div>
+                                                        <!--end::Select2-->
+
+                                                                                                               <div class="w-100 w-md-200px">       
+
+                                                            <select asp-items="ViewBag.SpecificationValues" class="form-select" id="specificationValue">
+                                                <option value="">Choose specification values</option>
+                                            </select>
+                                             </div>
+                                                       
+
+                                                        <input type="text" class="form-control mw-100 w-175px"
+                                                            id="variationBarcode" placeholder="Barcode"
+                                                            autocomplete="off" />
+
+                                                        <input type="text" class="form-control mw-100 w-175px"
+                                                            id="variationStockCode" placeholder="StockCode"
+                                                            autocomplete="off" />
+
+
+
+                                                        <button type="button" data-repeater-delete
+                                                            class="btn btn-sm btn-icon btn-light-danger">
+                                                            <i class="ki-duotone ki-cross fs-1"><span
+                                                                    class="path1"></span><span class="path2"></span></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--end::Form group-->
+
+                                        </div>
+                                        <!--end::Repeater-->
+                                    </div>
+                                    <!--end::Input group-->
+                                </div>
+                                <!--end::Card header-->
+                            </div>
+                            <!--end::Variations-->
+
+                        </div>
+                    </div>
+                    <!--end::Tab pane-->
+
+                </div>
+                <!--end::Tab content-->
+
+                <div class="d-flex justify-content-end">
+                    <!--begin::Button-->
+                    <a href="products.html" id="kt_ecommerce_add_product_cancel" class="btn btn-light me-5">
+                        Cancel
+                    </a>
+                    <!--end::Button-->
+
+                    <!--begin::Button-->
+                    <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                        <span class="indicator-label">
+                            Save Changes
+                        </span>
+                        <span class="indicator-progress">
+                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                    <!--end::Button-->
+                </div>
+            </div>
+            <!--end::Main column-->
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Content container-->
+</div>
+
+
+
+
+@section TopLevelJS
+{
+    <script src="/assets/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
+    <script type="text/javascript" src="/assets/plugins/custom/tinymce/tinymce.bundle.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+@section Scripts
+{
+
+    <script>
+
+        tinymceEditor();
+        const initFormRepeater = () => {
+            $('#kt_ecommerce_add_product_options').repeater({
+                initEmpty: false,
+                defaultValues: {
+                    'text-input': 'foo'
+                },
+
+                show: function () {
+                    $(this).slideDown();
+                    initConditionsSelect2();
+                },
+
+                hide: function (deleteElement) {
+                    $(this).slideUp(deleteElement);
+                }
+            });
+        }
+
+        
+        initFormRepeater();
+
+
+
+
+        const createVariationButton = document.getElementById("createVariationBtn");
+        if (createVariationButton) {
+            createVariationButton.addEventListener("click", () => {
+                const variationCount = document.getElementById("variationCount");
+                const specificationCount = document.getElementById("specificationCount");
+                if (variationCount && specificationCount) {
+                    const specificationDiv = document.getElementById("specificationDiv");
+                    if (variationDiv) {
+                        variationDiv.classList.remove("d-none");
+                        for (let i = 0; i < variationCount.value; i++) {
+                            const newHeading = document.createElement('h2');
+                            newHeading.textContent = `Variation ${i + 1}`;
+                            newHeading.classList.add('mt-3');
+                            specificationDiv.parentNode.appendChild(newHeading);
+                            const cloned = specificationDiv.cloneNode(true);
+                            for (let j = 0; j < specificationCount.value; j++) {
+                                const specificationName = cloned.querySelector("#specificationName");
+                                const specificationValue = cloned.querySelector("#specificationValue");
+
+                                specificationName.name = `ProductVariants[${i}].Specifications[${j}].SpecificationId`;                                
+                                specificationValue.name = `ProductVariants[${i}].Specifications[${j}].SpecificationValueId`; 
+
+                                specificationDiv.parentNode.appendChild(cloned);
+                            }
+                            
+
+
+                            const variationBarcode = cloned.querySelector("#variationBarcode");
+                            const variationStockCode = cloned.querySelector("#variationStockCode");
+                            variationBarcode.name = `ProductVariants[${i}].Barcode`;
+                            variationStockCode.name = `ProductVariants[${i}].StockCode`;
+                            specificationDiv.parentNode.appendChild(cloned);
+
+                            const newInput = document.createElement('input');
+                            newInput.name = `ProductVariants[${i}].Quantity`
+                            newInput.classList.add('form-control', 'mw-100', 'w-200px');
+                            newInput.style.display = 'block';
+                            newInput.style.margin = '0 auto';
+                            newInput.placeholder = 'Quantity';
+                            specificationDiv.parentNode.appendChild(newInput);
+
+                        }
+
+
+                    }
+
+                    const firstSpecificationDiv = document.querySelector("#specificationDiv");
+                    if (firstSpecificationDiv) {
+                        firstSpecificationDiv.style.setProperty('display', 'none', 'important');
+
+                    }
+
+                }
+            })
+        }
+
+    </script>
+}

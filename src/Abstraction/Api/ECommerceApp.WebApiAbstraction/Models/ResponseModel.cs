@@ -18,6 +18,8 @@ public class ResponseModel<T>
     public bool IsSuccessful { get; set; }
     public bool Status { get; set; }
     public List<string> Errors { get; set; }
+
+    public int? TotalCounts { get; set; }
     public static ResponseModel<T> Success(T data, int statusCode)
     {
         return new ResponseModel<T> { StatusCode = statusCode, Data = data, IsSuccessful = true, Status = true };

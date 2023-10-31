@@ -23,6 +23,7 @@ services:
     depends_on:
       - mongo
       - mssql
+      - ecommerceapp.catalogservice
     networks:
       - backend
   mongo:
@@ -85,7 +86,7 @@ services:
       - mssql
     networks:
       - backend
-  
+
   ecommerceapp.apigateway:
     container_name: apigateway_container
     image: hikdogru/ecommerceappapigateway:latest
@@ -93,12 +94,42 @@ services:
       context: .
       dockerfile: src/Gateway/ECommerceApp.ApiGateway/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development      
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8010
     ports:
       - "8010:8010"
     depends_on:
       - ecommerceapp.authservice
+      - ecommerceapp.catalogservice
+    networks:
+      - backend
+
+  ecommerceapp.catalogservice:
+    container_name: catalogservice_container
+    image: hikdogru/ecommerceappcatalogservice:latest
+    build:
+      context: .
+      dockerfile: src/Services/Catalog/ECommerceApp.CatalogService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8011
+      - MongoConnectionString__Connection=mongodb://admin:toor@mongo:27017
+      - MongoConnectionString__DatabaseName=ecommerceapp
+      - ConnectionStrings__ApplicationDbContextConnection=Server=mssql;Database=ECommerceApp;User ID=sa;Password=Roottoor123!;Trust Server Certificate=True;MultipleActiveResultSets=True
+      - ServiceUrls__CatalogService=http://ecommerceapp.catalogservice:8011
+    ports:
+      - "8011:8011"
+    depends_on:
+      - mongo
+      - mssql
+    networks:
+      - backend
+
+  redis:
+    container_name: redis_container
+    image: redis
+    ports:
+      - "6379:6379"
     networks:
       - backend
 
@@ -114,4 +145,3 @@ volumes:
   images:
   seqdata:
   mssqldata:
-

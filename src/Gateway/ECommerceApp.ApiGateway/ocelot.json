@@ -18,8 +18,10 @@
                 "AllowedScopes": []
             },
             "RouteClaimsRequirement": {
-                "role": ["Customer"]
-            }            
+                "role": [
+                    "Customer"
+                ]
+            }
         },
         {
             "DownstreamPathTemplate": "/api/v1/auth/login",
@@ -47,6 +49,20 @@
             "UpstreamPathTemplate": "/api/v1/auth/register",
             "UpstreamHttpMethod": [
                 "POST"
+            ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/v1/category/Get",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "ecommerceapp.catalogservice",
+                    "Port": 8011
+                }
+            ],
+            "UpstreamPathTemplate": "/api/v1/category/Get",
+            "UpstreamHttpMethod": [
+                "GET"
             ]
         }
     ],

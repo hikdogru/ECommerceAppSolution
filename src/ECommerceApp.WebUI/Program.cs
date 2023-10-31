@@ -21,6 +21,9 @@ using Microsoft.EntityFrameworkCore;
 using ECommerceApp.Core.Domain.Entities.Identity;
 using ECommerceApp.Application.Identity.JWT;
 using ECommerceApp.Infrastructure.Data;
+using AutoMapper;
+using ECommerceApp.WebUI.Services;
+using ECommerceApp.Infrastructure.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,6 +56,9 @@ builder.Services.AddScoped<IRepository<Dictionary, ObjectId>, BaseRepository<Dic
 builder.Services.AddScoped<IRepository<Brand, ObjectId>, BaseRepository<Brand>>();
 builder.Services.AddScoped<IRepository<Tag, ObjectId>, BaseRepository<Tag>>();
 builder.Services.AddScoped<IRepository<Parameter, ObjectId>, BaseRepository<Parameter>>();
+builder.Services.AddScoped<IRepository<Product, ObjectId>, BaseRepository<Product>>();
+builder.Services.AddScoped<IRepository<Specification, ObjectId>, BaseRepository<Specification>>();
+builder.Services.AddScoped<IRepository<SpecificationValue, ObjectId>, BaseRepository<SpecificationValue>>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ILanguageService, LanguageService>();
 builder.Services.AddScoped<IDictionaryService, DictionaryService>();
@@ -60,12 +66,18 @@ builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IParameterService, ParameterService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ISpecificationService, SpecificationService>();
+builder.Services.AddScoped<ISpecificationValueService, SpecificationValueService>();
 builder.Services.AddAutoMapper(typeof(CategoryMapping));
 builder.Services.AddTransient<UserLanguageMiddleware>();
 builder.Services.AddTransient<GlobalErrorHandlingMiddleware>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<ICookieService, HttpContextCookieService>();
 builder.Services.AddScoped<ITokenHandler, TokenHandler>();
+builder.Services.AddScoped<IApiBaseService, ApiBaseService>();
+
 
 
 
@@ -91,6 +103,14 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration["Redis:ConnectionString"];
+        options.InstanceName = builder.Configuration["Redis:InstanceName"];
+    });
+
+builder.Services.AddScoped<IRedisContext, RedisContext>();
 
 var app = builder.Build();
 
@@ -137,12 +157,21 @@ app.Run();
 
 async Task ApplyMigration()
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    if (db.Database.GetPendingMigrations().Count() > 0)
+    try
     {
-        db.Database.Migrate();
-        var adminUserSeeder = scope.ServiceProvider.GetRequiredService<AdminUserSeeder>();
-        await adminUserSeeder.SeedAdminUserAsync();
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        if (db.Database.GetPendingMigrations().Count() > 0)
+        {
+            db.Database.Migrate();
+            var adminUserSeeder = scope.ServiceProvider.GetRequiredService<AdminUserSeeder>();
+            await adminUserSeeder.SeedAdminUserAsync();
+        }
     }
+    catch (System.Exception)
+    {
+
+        throw;
+    }
+
 }
