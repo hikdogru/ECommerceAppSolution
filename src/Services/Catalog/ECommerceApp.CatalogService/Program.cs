@@ -49,6 +49,10 @@ builder.Services.AddStackExchangeRedisCache(options =>
     {
         options.Configuration = builder.Configuration["Redis:ConnectionString"];
         options.InstanceName = builder.Configuration["Redis:InstanceName"];
+        options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
+        {
+            AbortOnConnectFail = false,
+        };
     });
 
 
