@@ -117,6 +117,8 @@ services:
       - MongoConnectionString__DatabaseName=ecommerceapp
       - ConnectionStrings__ApplicationDbContextConnection=Server=mssql;Database=ECommerceApp;User ID=sa;Password=Roottoor123!;Trust Server Certificate=True;MultipleActiveResultSets=True
       - ServiceUrls__CatalogService=http://ecommerceapp.catalogservice:8011
+      - Redis__ConnectionString=redis:6379
+      - Redis__InstanceName=ECommerceApp
     ports:
       - "8011:8011"
     depends_on:

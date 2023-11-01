@@ -52,6 +52,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
         options.ConfigurationOptions = new StackExchange.Redis.ConfigurationOptions
         {
             AbortOnConnectFail = false,
+            EndPoints = { "localhost:6379" }, 
         };
     });
 
