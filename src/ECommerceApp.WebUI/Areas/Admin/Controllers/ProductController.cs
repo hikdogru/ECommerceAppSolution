@@ -16,8 +16,6 @@ using NToastNotify;
 
 namespace ECommerceApp.WebUI.Areas.Admin.Controllers
 {
-
-    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class ProductController : Controller
     {
@@ -156,7 +154,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
                 Text = x.SpecificationLanguages.FirstOrDefault(sl => sl.LanguageId == currentLanguageId.ToString())?.Name,
                 Value = x.Id.ToString()
             });
-            
+
 
             ViewBag.SpecificationValues = _specificationValueService.GetAll()
             .Where(x => !x.IsDeleted &&
