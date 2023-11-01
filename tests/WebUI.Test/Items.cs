@@ -404,7 +404,7 @@ public static class Items
         var categoryDTOList = new List<CategoryDTO>();
         foreach (var category in categories)
         {
-            var categoryDto = new CategoryDTO(category.Id, category.CategoryLanguages, category.IsActive, category.CategoryMedias);
+            var categoryDto = new CategoryDTO(category.Id.ToString(), category.CategoryLanguages, category.IsActive, category.CategoryMedias);
             categoryDTOList.Add(categoryDto);
         }
 

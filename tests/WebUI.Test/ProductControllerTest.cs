@@ -18,17 +18,31 @@ public class ProductControllerTest
 {
     private readonly ProductController _productController;
     private readonly Mock<IProductService> _productServiceMock;
+    private readonly Mock<ILanguageService> _languageServiceMock;
+    private readonly Mock<ICategoryService> _categoryServiceMock;
+    private readonly Mock<IBrandService> _brandServiceMock;
+    private readonly Mock<ITagService> _tagServiceMock;
+    private readonly Mock<ISpecificationService> _specificationServiceMock;
+    private readonly Mock<ISpecificationValueService> _specificationValueServiceMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly Mock<IToastNotification> _toastMock;
     private readonly Mock<ILogger<ProductController>> _loggerMock;
 
     public ProductControllerTest()
     {
+        _specificationValueServiceMock = new();
+        _specificationServiceMock = new();
+        _tagServiceMock = new();
+        _brandServiceMock = new();
+        _categoryServiceMock = new();
+        _languageServiceMock = new();
         _productServiceMock = new();
         _mapperMock = new Mock<IMapper>();
         _toastMock = new();
         _loggerMock = new();
-        _productController = new(_loggerMock.Object, _productServiceMock.Object, _mapperMock.Object, _toastMock.Object);
+        _productController = new(_loggerMock.Object, _productServiceMock.Object,
+            _mapperMock.Object, _toastMock.Object, _languageServiceMock.Object, _categoryServiceMock.Object,
+            _brandServiceMock.Object, _tagServiceMock.Object, _specificationServiceMock.Object, _specificationValueServiceMock.Object);
     }
 
 
@@ -95,10 +109,10 @@ public class ProductControllerTest
             new ProductVariant { Barcode = "P001-V1",  Quantity = 50 },
             new ProductVariant { Barcode = "P001-V2", Quantity = 50 }
         },
-        ProductSpecifications = new List<ProductSpecificationLanguage>
+        ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US"  },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR" }
+            new ProductSpecification { SpecificationId = "4",  SpecificationValueId = "1" },
+            new ProductSpecification { SpecificationId = "2",  SpecificationValueId = "4" }
         }
     },
         new Product
@@ -126,10 +140,10 @@ public class ProductControllerTest
             new ProductVariant { Barcode = "P002-V1",  Quantity = 100 },
             new ProductVariant { Barcode = "P002-V2",  Quantity = 100 }
         },
-            ProductSpecifications = new List<ProductSpecificationLanguage>
+            ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US",  Value = "Medium" },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR",  Value = "Orta" }
+            new ProductSpecification { SpecificationId = "2",  SpecificationValueId = "3" },
+            new ProductSpecification { SpecificationId = "3",  SpecificationValueId = "2" }
         }
         },
          new Product
@@ -157,10 +171,10 @@ public class ProductControllerTest
             new ProductVariant { Barcode = "P003-V1",  Quantity = 150 },
             new ProductVariant { Barcode = "P003-V2",  Quantity = 150 }
         },
-            ProductSpecifications = new List<ProductSpecificationLanguage>
+            ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US",  Value = "Small" },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR",  Value = "Küçük" }
+            new ProductSpecification { SpecificationId = "2",  SpecificationValueId = "1" },
+            new ProductSpecification { SpecificationId = "1",  SpecificationValueId = "2" }
         }
         },
 new Product
@@ -188,10 +202,10 @@ new Product
             new ProductVariant { Barcode = "P004-V1",  Quantity = 200 },
             new ProductVariant { Barcode = "P004-V2",  Quantity = 200 }
         },
-    ProductSpecifications = new List<ProductSpecificationLanguage>
+    ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US",  Value = "Medium" },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR",  Value = "Orta" }
+            new ProductSpecification { SpecificationId = "4",  SpecificationValueId = "3" },
+            new ProductSpecification { SpecificationId = "5",  SpecificationValueId = "2" }
         }
 },
     new Product
@@ -219,10 +233,10 @@ new Product
             new ProductVariant { Barcode = "P005-V1", Quantity = 250 },
             new ProductVariant { Barcode = "P005-V2",  Quantity = 250 }
         },
-        ProductSpecifications = new List<ProductSpecificationLanguage>
+        ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US",  Value = "Large" },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR",  Value = "Büyük" }
+            new ProductSpecification { SpecificationId = "2",  SpecificationValueId = "1" },
+            new ProductSpecification { SpecificationId = "3",  SpecificationValueId = "3" }
         }
     },
 
@@ -251,10 +265,10 @@ new Product
             new ProductVariant { Barcode = "P006-V1",  Quantity = 300 },
             new ProductVariant { Barcode = "P006-V2",  Quantity = 300 }
         },
-        ProductSpecifications = new List<ProductSpecificationLanguage>
+        ProductSpecifications = new List<ProductSpecification>
         {
-            new ProductSpecificationLanguage { LanguageId = "en-US",  Value = "Small" },
-            new ProductSpecificationLanguage { LanguageId = "tr-TR",  Value = "Küçük" }
+            new ProductSpecification { SpecificationId = "1",  SpecificationValueId = "2" },
+            new ProductSpecification { SpecificationId = "2",  SpecificationValueId = "3" }
         }
     }
             };
@@ -268,15 +282,17 @@ new Product
             x.Code,
             x.GroupCode,
             x.Price,
-            x.TotalQuantity, 
+            x.TotalQuantity,
             x.IsItOffSale,
-            x.BrandId, 
-            x.CategoryIds, 
-            x.TagIds, 
-            x.Images, 
+            x.BrandId,
+            x.CategoryIds,
+            x.TagIds,
+            x.Images,
             x.ProductLanguages,
+            x.TaxRate,
             x.ProductVariants,
             x.ProductSpecifications
+
 
         )).ToList();
     }
@@ -290,7 +306,7 @@ new Product
             Image = x.Images is List<ProductImage> ? x.Images.FirstOrDefault(y => y.IsDefault).Path : "",
             IsItOffSale = x.IsItOffSale,
             Price = x.Price,
-            TotalQuantity = x.TotalQuantity            
+            TotalQuantity = x.TotalQuantity
         });
     }
 }

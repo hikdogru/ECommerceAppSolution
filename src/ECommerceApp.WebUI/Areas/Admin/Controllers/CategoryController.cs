@@ -29,7 +29,6 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         private readonly IToastNotification _toastNotification;
         private readonly IApiBaseService _apiBaseService;
         private readonly IConfiguration _configuration;
-        private readonly ILogger<CategoryController> _logger;
 
         #endregion
 
@@ -41,8 +40,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             IToastNotification toastNotification,
             ILanguageService languageService,
             IApiBaseService apiBaseService,
-            IConfiguration configuration,
-            ILogger<CategoryController> logger)
+            IConfiguration configuration)
         {
             _categoryService = categoryService;
             _env = env;
@@ -51,7 +49,6 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
             _languageService = languageService;
             _apiBaseService = apiBaseService;
             _configuration = configuration;
-            _logger = logger;
         }
 
         #endregion
@@ -74,7 +71,7 @@ namespace ECommerceApp.WebUI.Areas.Admin.Controllers
         {
             try
             {
-                string catalogServiceUrl = _configuration["ServiceUrls:CatalogService"];               
+                string catalogServiceUrl = _configuration["ServiceUrls:CatalogService"];
                 var requestModel = new WebUI.Models.ApiRequestModel
                 {
                     Url = $"{catalogServiceUrl}/api/v1/Category/Get?page={page}&size={pageSize}"
